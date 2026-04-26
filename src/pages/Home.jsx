@@ -18,6 +18,7 @@ import Counter from '../components/Counter';
 import { useSeo } from '../hooks/useSeo';
 import { useReveal } from '../hooks/useReveal';
 import { useParallax } from '../hooks/useParallax';
+import { useScrollProgress } from '../hooks/useScrollProgress';
 import './Home.css';
 
 const products = [
@@ -118,6 +119,8 @@ function Home() {
     const [statsRef, statsVisible] = useReveal(0.2);
 
     const heroBgRef = useParallax(0.22, { scale: 0.0004 });
+    const cineImgRef = useParallax(0.15, { scale: 0.0006 });
+    const [cineRef, cineProgress] = useScrollProgress();
 
     const [openSpec, setOpenSpec] = useState(null);
 
@@ -243,7 +246,7 @@ function Home() {
             {/* MARQUEE — cinta llamativa */}
             <section className="lab-marquee" aria-hidden="true">
                 <div className="lab-marquee-track">
-                    {Array.from({ length: 2 }).map((_, g) => (
+                    {Array.from({ length: 4 }).map((_, g) => (
                         <div className="lab-marquee-group" key={g}>
                             <span>Cosecha responsable</span><span className="lab-marquee-dot">✦</span>
                             <span>Entregas puntuales</span><span className="lab-marquee-dot">✦</span>
@@ -300,6 +303,41 @@ function Home() {
                                 </article>
                             );
                         })}
+                    </div>
+                </div>
+            </section>
+
+            {/* CINEMATIC — animación scroll entre B2B y Catálogo */}
+            <section
+                className="lab-cine"
+                ref={cineRef}
+                style={{ '--cine-p': cineProgress }}
+                aria-label="Del campo a tu mesa"
+            >
+                <div className="lab-cine-img" ref={cineImgRef} aria-hidden="true" />
+                <div className="lab-cine-overlay" aria-hidden="true" />
+
+                <div className="lab-cine-leaves" aria-hidden="true">
+                    <Leaf className="lab-cine-leaf lab-cine-leaf-1" size={28} strokeWidth={1.4} />
+                    <Leaf className="lab-cine-leaf lab-cine-leaf-2" size={36} strokeWidth={1.4} />
+                    <Leaf className="lab-cine-leaf lab-cine-leaf-3" size={22} strokeWidth={1.4} />
+                    <Leaf className="lab-cine-leaf lab-cine-leaf-4" size={32} strokeWidth={1.4} />
+                </div>
+
+                <div className="container lab-cine-content">
+                    <span className="lab-cine-eyebrow">Trazabilidad de lote a mesa</span>
+                    <h2 className="lab-cine-h">
+                        Del campo,{' '}
+                        <span className="lab-cine-accent">directo a tu empresa.</span>
+                    </h2>
+                    <div className="lab-cine-rail" aria-hidden="true">
+                        <span className="lab-cine-rail-fill" />
+                    </div>
+                    <div className="lab-cine-stops">
+                        <span><strong>01</strong> Cosecha</span>
+                        <span><strong>02</strong> Empaque</span>
+                        <span><strong>03</strong> Cadena de frío</span>
+                        <span><strong>04</strong> Tu centro</span>
                     </div>
                 </div>
             </section>
