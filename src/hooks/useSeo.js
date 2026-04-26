@@ -25,9 +25,11 @@ function setLink(rel, href) {
     el.setAttribute('href', href);
 }
 
+const TAB_TITLE = 'Labrego';
+
 export function useSeo({ title, description, path = '/', image = DEFAULT_IMAGE, type = 'website' }) {
     useEffect(() => {
-        if (title) document.title = title;
+        document.title = TAB_TITLE;
         const url = `${SITE_URL}${path}`;
 
         setMeta('name', 'description', description);
