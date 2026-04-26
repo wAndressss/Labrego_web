@@ -1,0 +1,17 @@
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-terracota);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 1100;
+    pointer-events: none;
+    will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-progress { transition: none; }
+}

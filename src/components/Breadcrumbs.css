@@ -1,0 +1,64 @@
+.breadcrumbs {
+    margin-bottom: 1rem;
+}
+
+.breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.breadcrumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.breadcrumbs a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: rgba(255, 255, 255, 0.78);
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--color-bg-white);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.breadcrumbs li.current span {
+    color: var(--color-bg-white);
+    font-weight: 600;
+}
+
+.breadcrumbs .bc-sep {
+    color: rgba(255, 255, 255, 0.5);
+    flex-shrink: 0;
+}
+
+/* Light variant for use over white backgrounds */
+.breadcrumbs.dark li,
+.breadcrumbs.dark a {
+    color: var(--color-text-muted);
+}
+
+.breadcrumbs.dark a:hover {
+    color: var(--color-primary);
+}
+
+.breadcrumbs.dark li.current span {
+    color: var(--color-text-main);
+}
+
+.breadcrumbs.dark .bc-sep {
+    color: var(--color-border);
+}
