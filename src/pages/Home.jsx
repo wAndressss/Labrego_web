@@ -99,9 +99,9 @@ const benefits = [
 ];
 
 const channels = [
-    { icon: Building2, label: 'Supermercados', text: 'Reposición programada por SKU.' },
+    { icon: Building2, label: 'Supermercados', text: 'Seguridad en calidad, volumen y tiempos de entrega.' },
     { icon: PackageCheck, label: 'Agroindustria', text: 'Volumen y calibre a la medida.' },
-    { icon: Truck, label: 'Foodservice', text: 'Frescura puntual, lote a lote.' },
+    { icon: Truck, label: 'Foodservice', text: 'Frescura puntual.' },
 ];
 
 function Home() {
@@ -149,14 +149,14 @@ function Home() {
                     </span>
 
                     <h1 className={`lab-hero-h reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        Excelencia en{' '}
-                        <span className="lab-accent">Productos Agropecuarios.</span>
+                        Abastecimiento de{' '}
+                        <span className="lab-accent">alimentos frescos en volumen real.</span>
                     </h1>
 
                     <p className={`lab-hero-lead reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        Frutas, hortalizas y cárnicos al por mayor para supermercados,
-                        agroindustria y foodservice. Volumen predecible, trazabilidad
-                        documentada y logística que cumple.
+                        Producimos y abastecemos frutas y cárnicos
+                        para retail, plazas, mayoristas e industria.
+                        <br />• Volumen constante  • Trazabilidad documentada  • Logística precisa<br />
                     </p>
 
                     <div className={`lab-hero-actions reveal-up ${heroVisible ? 'visible' : ''}`}>
@@ -187,13 +187,13 @@ function Home() {
                     <div className={`lab-stats-grid reveal-stagger ${statsVisible ? 'visible' : ''}`}>
                         <div className="lab-stat">
                             <span className="lab-stat-num">
-                                {statsVisible ? <Counter to={25} suffix="+" /> : '0+'}
+                                {statsVisible ? <Counter to={5} suffix="+" /> : '0+'}
                             </span>
-                            <span className="lab-stat-lbl">Años cultivando</span>
+                            <span className="lab-stat-lbl">Años en el mercado</span>
                         </div>
                         <div className="lab-stat">
                             <span className="lab-stat-num">
-                                {statsVisible ? <Counter to={800} suffix="+" /> : '0+'}
+                                {statsVisible ? <Counter to={10} suffix="+" /> : '0+'}
                             </span>
                             <span className="lab-stat-lbl">Hectáreas activas</span>
                         </div>
@@ -237,7 +237,7 @@ function Home() {
                         <div className="lab-exp-pills">
                             <span><Leaf size={14} /> Manejo agronómico responsable</span>
                             <span><ShieldCheck size={14} /> Trazabilidad de lote</span>
-                            <span><Truck size={14} /> Cadena de frío continua</span>
+                            <span><Truck size={14} /> Responsabilidad en tiempos de entrega</span>
                         </div>
                     </div>
                 </div>
@@ -252,8 +252,8 @@ function Home() {
                             <span>Entregas puntuales</span><span className="lab-marquee-dot">✦</span>
                             <span>Trazabilidad total</span><span className="lab-marquee-dot">✦</span>
                             <span>Volumen predecible</span><span className="lab-marquee-dot">✦</span>
-                            <span>Calidad exportación</span><span className="lab-marquee-dot">✦</span>
-                            <span>Origen Colombia</span><span className="lab-marquee-dot">✦</span>
+                            <span>Calidad</span><span className="lab-marquee-dot">✦</span>
+                            <span>Origen Colombiano</span><span className="lab-marquee-dot">✦</span>
                         </div>
                     ))}
                 </div>
@@ -335,9 +335,9 @@ function Home() {
                     </div>
                     <div className="lab-cine-stops">
                         <span><strong>01</strong> Cosecha</span>
-                        <span><strong>02</strong> Empaque</span>
-                        <span><strong>03</strong> Cadena de frío</span>
-                        <span><strong>04</strong> Tu centro</span>
+                        <span><strong>02</strong> Selección</span>
+                        <span><strong>03</strong> Empaque</span>
+                        <span><strong>04</strong> Distribución</span>
                     </div>
                 </div>
             </section>

@@ -61,8 +61,8 @@ function Footer() {
 
                 <div className="footer-contact">
                     <h4>Contacto</h4>
-                    <a href="mailto:contacto@labrego.com" className="contact-row"><Mail size={15} /> contacto@labrego.com</a>
-                    <a href="tel:+573001234567" className="contact-row"><Phone size={15} /> +57 300 123 4567</a>
+                    <a href="mailto:labregooficial@labrego.com" className="contact-row"><Mail size={15} />labregooficial@labrego.com</a>
+                    <a href="tel:+573001234567" className="contact-row"><Phone size={15} /> +57 313 519 2726</a>
                     <div className="contact-row"><MapPin size={15} /> Trujillo, Valle del Cauca</div>
                 </div>
 
