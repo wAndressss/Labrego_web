@@ -234,16 +234,75 @@
     }
 }
 
-.header-cta:hover {
+.header-cta {
+    gap: 0.45rem;
     background: var(--color-accent);
-    color: var(--color-secondary-dark);
     border-color: var(--color-accent);
+    color: var(--color-bg-ink);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Brillo que recorre el botón cada pocos segundos */
+.header-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+    transform: translateX(-120%);
+    animation: header-cta-shine 4.5s ease-in-out 2s infinite;
+}
+
+@keyframes header-cta-shine {
+    0%, 70% { transform: translateX(-120%); }
+    100% { transform: translateX(120%); }
+}
+
+.header-portal {
+    display: none;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+
+.header.scrolled .header-portal {
+    color: var(--color-bg-ink);
+    border-color: rgba(31, 48, 16, 0.25);
+}
+
+.header-portal:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.header.scrolled .header-portal:hover {
+    background: rgba(31, 48, 16, 0.08);
+}
+
+@media (min-width: 1100px) {
+    .header-portal {
+        display: inline-flex;
+    }
+}
+
+.header-cta:hover,
+.header-cta.active {
+    background: var(--color-secondary);
+    color: #fff;
+    border-color: var(--color-secondary);
     transform: translateY(-1px);
     box-shadow: 0 10px 24px -8px rgba(152, 191, 34, 0.55);
 }
 
 .mobile-cta {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     margin-top: 1rem;
     background: var(--color-secondary);
     color: #fff !important;
@@ -393,4 +452,23 @@
 
 .mt-2 {
     margin-top: 0.5rem;
+}
+
+.mobile-cta-quote {
+    background: var(--color-accent);
+    color: var(--color-bg-ink) !important;
+}
+
+.mobile-cta-quote + .mobile-cta {
+    margin-top: 0.6rem;
+    background: transparent;
+    color: var(--color-secondary) !important;
+    border: 1px solid var(--color-secondary);
+    box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header-cta::after {
+        animation: none;
+    }
 }

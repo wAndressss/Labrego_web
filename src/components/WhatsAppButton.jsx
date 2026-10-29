@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { WHATSAPP_PHONE as PHONE } from '../data/contact';
 import './WhatsAppButton.css';
 
-const PHONE = '573001234567'; // sin +, formato internacional
 const DEFAULT_MESSAGE = 'Hola Labrego, me gustaría recibir más información sobre sus productos.';
 
 function WhatsAppButton() {

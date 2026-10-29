@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     ArrowRight,
-    ArrowUpRight,
     Sparkles,
     ShieldCheck,
     Truck,
@@ -12,7 +11,11 @@ import {
     PackageCheck,
     X,
     FileText,
+    ClipboardList,
+    Package,
+    MessageCircle,
 } from 'lucide-react';
+import ProductImage from '../components/ProductImage';
 import ClientTicker from '../components/home/ClientTicker';
 import Counter from '../components/Counter';
 import { useSeo } from '../hooks/useSeo';
@@ -24,6 +27,7 @@ import './Home.css';
 const products = [
     {
         name: 'Plátano Verde',
+        slug: 'platano-verde',
         img: '/productos/platano_verde.png',
         tag: 'Industria',
         meta: 'Musa AAB · Quindío',
@@ -41,6 +45,7 @@ const products = [
     },
     {
         name: 'Banano Común',
+        slug: 'banano-comun',
         img: '/productos/banano_comun.png',
         tag: 'Retail',
         meta: 'Cavendish · AAA',
@@ -58,6 +63,7 @@ const products = [
     },
     {
         name: 'Aguacate Papelillo',
+        slug: 'aguacate-papelillo',
         img: '/productos/aguacate_papelillo.png',
         tag: 'Premium',
         meta: 'Persea americana',
@@ -98,6 +104,12 @@ const benefits = [
     },
 ];
 
+const quoteSteps = [
+    { icon: Package, title: 'Elige productos', text: 'Selecciona del catálogo y define cantidades por kilo, caja o canastilla.' },
+    { icon: Truck, title: 'Define la entrega', text: 'Frecuencia, ciudad y fecha de la primera entrega.' },
+    { icon: MessageCircle, title: 'Recibe tu propuesta', text: 'Te respondemos por WhatsApp o correo en menos de 24 h hábiles.' },
+];
+
 const channels = [
     { icon: Building2, label: 'Supermercados', text: 'Seguridad en calidad, volumen y tiempos de entrega.' },
     { icon: PackageCheck, label: 'Agroindustria', text: 'Volumen y calibre a la medida.' },
@@ -117,6 +129,7 @@ function Home() {
     const [productsRef, productsVisible] = useReveal(0.12);
     const [benefitsRef, benefitsVisible] = useReveal(0.15);
     const [statsRef, statsVisible] = useReveal(0.2);
+    const [quoteRef, quoteVisible] = useReveal(0.2);
 
     const heroBgRef = useParallax(0.22, { scale: 0.0004 });
     const cineImgRef = useParallax(0.15, { scale: 0.0006 });
@@ -141,6 +154,9 @@ function Home() {
             <section className="lab-hero" ref={heroRef} aria-label="Bienvenida">
                 <div className="lab-hero-img" ref={heroBgRef} aria-hidden="true" />
                 <div className="lab-hero-overlay" aria-hidden="true" />
+                <div className="lab-hero-particles" aria-hidden="true">
+                    {Array.from({ length: 14 }).map((_, i) => <span key={i} />)}
+                </div>
 
                 <div className="container lab-hero-inner">
                     <span className={`lab-pill ${heroVisible ? 'visible' : ''}`}>
@@ -164,15 +180,10 @@ function Home() {
                             Ver Productos
                             <ArrowRight size={16} />
                         </Link>
-                        <a
-                            href="https://www.proveedores.labrego.com.co"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="lab-btn lab-btn-outline-light"
-                        >
-                            Acceso Portal
-                            <ArrowUpRight size={16} />
-                        </a>
+                        <Link to="/cotizar" className="lab-btn lab-btn-outline-light">
+                            Solicitar cotización
+                            <ClipboardList size={16} />
+                        </Link>
                     </div>
                 </div>
 
@@ -361,21 +372,27 @@ function Home() {
                         {products.map((p) => (
                             <article key={p.name} className="lab-product-card">
                                 <div className="lab-product-img">
-                                    <img src={p.img} alt={p.name} loading="lazy" />
+                                    <ProductImage src={p.img} alt={p.name} name={p.name} />
                                     <span className="lab-product-tag">{p.tag}</span>
                                 </div>
                                 <div className="lab-product-body">
                                     <span className="lab-product-meta">{p.meta}</span>
                                     <h3 className="lab-product-name">{p.name}</h3>
                                     <p className="lab-product-desc">{p.desc}</p>
-                                    <button
-                                        type="button"
-                                        className="lab-btn lab-btn-card"
-                                        onClick={() => setOpenSpec(p)}
-                                    >
-                                        <FileText size={14} />
-                                        Ver Ficha Técnica
-                                    </button>
+                                    <div className="lab-product-actions">
+                                        <button
+                                            type="button"
+                                            className="lab-btn lab-btn-card"
+                                            onClick={() => setOpenSpec(p)}
+                                        >
+                                            <FileText size={14} />
+                                            Ficha técnica
+                                        </button>
+                                        <Link to={`/cotizar?producto=${p.slug}`} className="lab-btn lab-btn-olive lab-btn-sm">
+                                            Cotizar
+                                            <ArrowRight size={14} />
+                                        </Link>
+                                    </div>
                                 </div>
                             </article>
                         ))}
@@ -386,6 +403,46 @@ function Home() {
                             Ver catálogo completo
                             <ArrowRight size={16} />
                         </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* COTIZACIÓN — llamado a la acción */}
+            <section className="lab-quote-cta" ref={quoteRef} aria-label="Cotiza tu pedido">
+                <div className="lab-quote-cta-bg" aria-hidden="true" />
+                <div className="container">
+                    <div className="lab-quote-cta-inner">
+                        <header className={`lab-quote-cta-head reveal-up ${quoteVisible ? 'visible' : ''}`}>
+                            <span className="lab-eyebrow lab-eyebrow-light">Cotización en línea</span>
+                            <h2 className="lab-h2">
+                                Tu pedido cotizado{' '}
+                                <span className="lab-accent">en 3 pasos.</span>
+                            </h2>
+                            <p className="lab-section-lead">
+                                Sin llamadas ni formularios eternos. Arma tu lista, dinos dónde
+                                entregar y recibe precios por volumen.
+                            </p>
+                            <Link to="/cotizar" className="lab-btn lab-btn-accent">
+                                Empezar cotización
+                                <ArrowRight size={16} />
+                            </Link>
+                        </header>
+
+                        <ol className={`lab-quote-steps reveal-stagger ${quoteVisible ? 'visible' : ''}`}>
+                            {quoteSteps.map((q, i) => {
+                                const Icon = q.icon;
+                                return (
+                                    <li key={q.title} className="lab-quote-step">
+                                        <span className="lab-quote-step-num">0{i + 1}</span>
+                                        <span className="lab-quote-step-icon"><Icon size={22} strokeWidth={1.6} /></span>
+                                        <div>
+                                            <h3>{q.title}</h3>
+                                            <p>{q.text}</p>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ol>
                     </div>
                 </div>
             </section>
@@ -412,7 +469,7 @@ function Home() {
                         </button>
                         <div className="lab-modal-head">
                             <div className="lab-modal-img">
-                                <img src={openSpec.img} alt={openSpec.name} />
+                                <ProductImage src={openSpec.img} alt={openSpec.name} name={openSpec.name} loading="eager" />
                             </div>
                             <div>
                                 <span className="lab-modal-tag">{openSpec.tag}</span>
@@ -431,7 +488,7 @@ function Home() {
                             </tbody>
                         </table>
                         <div className="lab-modal-actions">
-                            <Link to="/contacto" className="lab-btn lab-btn-olive" onClick={() => setOpenSpec(null)}>
+                            <Link to={`/cotizar?producto=${openSpec.slug}`} className="lab-btn lab-btn-olive" onClick={() => setOpenSpec(null)}>
                                 Solicitar cotización
                                 <ArrowRight size={16} />
                             </Link>

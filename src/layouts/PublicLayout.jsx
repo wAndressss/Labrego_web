@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -7,13 +7,17 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import ScrollProgress from '../components/ScrollProgress';
 
 function PublicLayout() {
+    const { pathname } = useLocation();
     return (
         <div className="public-layout">
             <ScrollProgress />
             <ScrollToTop />
             <Header />
             <main className="main-content">
-                <Outlet />
+                {/* La key reinicia la animación de entrada en cada cambio de página */}
+                <div className="page-transition" key={pathname}>
+                    <Outlet />
+                </div>
             </main>
             <Footer />
             <WhatsAppButton />

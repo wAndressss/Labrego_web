@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ClipboardList } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './Header.css';
 
@@ -119,11 +119,19 @@ function Header() {
                         href="https://www.proveedores.labrego.com.co"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="header-cta"
+                        className="header-portal"
                         onClick={closeAll}
                     >
                         Portal Proveedores
                     </a>
+                    <Link
+                        to="/cotizar"
+                        className={`header-cta ${isActive('/cotizar') ? 'active' : ''}`}
+                        aria-current={ariaCurrent('/cotizar')}
+                        onClick={closeAll}
+                    >
+                        <ClipboardList size={16} /> Cotizar
+                    </Link>
                     <button
                         className="mobile-menu-btn"
                         onClick={() => setMobileMenuOpen(v => !v)}
@@ -152,6 +160,9 @@ function Header() {
                     </div>
                     <Link to="/productos" className={isActive('/productos') ? 'active' : ''} aria-current={ariaCurrent('/productos')} onClick={closeAll}>Productos</Link>
                     <Link to="/contacto" className={isActive('/contacto') ? 'active' : ''} aria-current={ariaCurrent('/contacto')} onClick={closeAll}>Contacto</Link>
+                    <Link to="/cotizar" className="mobile-cta mobile-cta-quote" onClick={closeAll}>
+                        <ClipboardList size={18} /> Cotizar pedido
+                    </Link>
                     <a
                         href="https://www.proveedores.labrego.com.co"
                         target="_blank"

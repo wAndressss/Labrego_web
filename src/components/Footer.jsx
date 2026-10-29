@@ -39,7 +39,7 @@ function Footer() {
                         <div className="footer-logo">LABREGO</div>
                     )}
                     <p className="footer-desc">
-                        Soluciones agropecuarias enfocadas en plátano y banano con los más altos estándares empresariales.
+                        Frutas, plátano, banano, hortalizas y cárnicos para empresas, con los más altos estándares de calidad.
                     </p>
                     <div className="footer-social">
                         <a href="#" aria-label="Facebook"><Facebook size={18} /></a>
@@ -54,6 +54,7 @@ function Footer() {
                         <li><Link to="/">Inicio</Link></li>
                         <li><Link to="/empresa">Empresa</Link></li>
                         <li><Link to="/productos">Productos</Link></li>
+                        <li><Link to="/cotizar">Cotizar pedido</Link></li>
                         <li><Link to="/trabaja-con-nosotros">Carreras</Link></li>
                         <li><Link to="/contacto">Contacto</Link></li>
                     </ul>
@@ -62,7 +63,7 @@ function Footer() {
                 <div className="footer-contact">
                     <h4>Contacto</h4>
                     <a href="mailto:labregooficial@labrego.com" className="contact-row"><Mail size={15} />labregooficial@labrego.com</a>
-                    <a href="tel:+573001234567" className="contact-row"><Phone size={15} /> +57 313 519 2726</a>
+                    <a href="tel:+573135192726" className="contact-row"><Phone size={15} /> +57 313 519 2726</a>
                     <div className="contact-row"><MapPin size={15} /> Trujillo, Valle del Cauca</div>
                 </div>
 
