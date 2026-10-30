@@ -274,20 +274,54 @@
     grid-template-columns: 52px 1fr auto;
     grid-template-areas:
         'img info remove'
-        'qty qty unit';
+        'order order order';
     gap: 0.75rem;
     align-items: center;
-    padding: 0.75rem;
+    padding: 0.85rem;
     background: var(--color-bg-paper);
     border-radius: var(--radius-md);
     animation: quote-item-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 760px) {
     .quote-item {
-        grid-template-columns: 52px 1fr auto auto auto;
-        grid-template-areas: 'img info qty unit remove';
+        grid-template-columns: 52px minmax(0, 1fr) auto auto;
+        grid-template-areas: 'img info order remove';
     }
+}
+
+/* Cantidad, unidad y frecuencia juntas: "100 kg · Semanal" */
+.quote-order {
+    grid-area: order;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.quote-order-sep {
+    font-weight: 700;
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 759px) {
+    .quote-order {
+        display: grid;
+        grid-template-columns: auto 1fr;
+    }
+
+    .quote-order-sep {
+        display: none;
+    }
+
+    .quote-order .quote-freq {
+        grid-column: 1 / -1;
+    }
+}
+
+.quote-freq {
+    font-weight: 600;
+    color: var(--color-secondary);
 }
 
 @keyframes quote-item-in {
@@ -348,7 +382,6 @@
 }
 
 .quote-qty {
-    grid-area: qty;
     display: flex;
     align-items: center;
     background: #fff;
@@ -391,7 +424,6 @@
 }
 
 .quote-unit {
-    grid-area: unit;
     height: 38px;
     padding: 0 0.75rem;
     border: 1px solid var(--color-border);
@@ -637,8 +669,17 @@
 }
 
 .quote-summary-list strong {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     color: var(--color-accent-light);
     white-space: nowrap;
+}
+
+.quote-summary-list small {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .quote-summary-meta {

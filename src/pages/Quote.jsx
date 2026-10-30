@@ -26,6 +26,9 @@ const DRAFT_KEY = 'labrego-quote-draft';
 const UNITS = ['kg', 'toneladas', 'canastillas', 'cajas', 'bultos', 'unidades'];
 
 const FREQUENCIES = ['Pedido único', 'Semanal', 'Quincenal', 'Mensual'];
+const DEFAULT_FREQUENCY = 'Semanal';
+
+const newItem = (slug) => ({ slug, quantity: 100, unit: 'kg', frequency: DEFAULT_FREQUENCY, note: '' });
 
 const CLIENT_TYPES = [
     'Supermercado / Retail',
@@ -45,7 +48,6 @@ const STEPS = [
 
 const emptyDraft = {
     items: [],
-    frequency: 'Semanal',
     startDate: '',
     city: '',
     clientType: '',
@@ -64,8 +66,12 @@ function loadDraft() {
         const raw = localStorage.getItem(DRAFT_KEY);
         if (!raw) return emptyDraft;
         const saved = JSON.parse(raw);
-        // Solo conserva productos que sigan existiendo en el catálogo
-        const items = (saved.items || []).filter(it => findProduct(it.slug));
+        // Solo conserva productos que sigan existiendo en el catálogo. Los
+        // borradores antiguos tenían una sola frecuencia para todo el pedido.
+        const items = (saved.items || [])
+            .filter(it => findProduct(it.slug))
+            .map(it => ({ ...it, frequency: it.frequency || saved.frequency || DEFAULT_FREQUENCY }));
+        delete saved.frequency;
         return { ...emptyDraft, ...saved, items };
     } catch {
         return emptyDraft;
@@ -80,10 +86,9 @@ function buildMessage(d) {
         '*Productos:*',
         ...d.items.map(it => {
             const p = findProduct(it.slug);
-            return `• ${p.name}: ${it.quantity} ${it.unit}${it.note ? ` (${it.note})` : ''}`;
+            return `• ${p.name}: ${it.quantity} ${it.unit} — ${it.frequency}${it.note ? ` (${it.note})` : ''}`;
         }),
         '',
-        `*Frecuencia:* ${d.frequency}`,
         ...optional(d.startDate, `*Primera entrega:* ${d.startDate}`),
         `*Ciudad de entrega:* ${d.city}`,
         ...optional(d.clientType, `*Tipo de cliente:* ${d.clientType}`),
@@ -109,7 +114,7 @@ function Quote() {
         const saved = loadDraft();
         const slug = searchParams.get('producto');
         if (!slug || !findProduct(slug) || saved.items.some(it => it.slug === slug)) return saved;
-        return { ...saved, items: [...saved.items, { slug, quantity: 100, unit: 'kg', note: '' }] };
+        return { ...saved, items: [...saved.items, newItem(slug)] };
     });
     const [step, setStep] = useState(0);
     const [errors, setErrors] = useState({});
@@ -134,7 +139,7 @@ function Quote() {
             ...d,
             items: isSelected(slug)
                 ? d.items.filter(it => it.slug !== slug)
-                : [...d.items, { slug, quantity: 100, unit: 'kg', note: '' }],
+                : [...d.items, newItem(slug)],
         }));
         setErrors(e => ({ ...e, items: undefined }));
     };
@@ -272,7 +277,7 @@ function Quote() {
                                         <div className="quote-panel" key="step-0">
                                             <div className="quote-panel-head">
                                                 <h2>¿Qué productos necesitas?</h2>
-                                                <p>Toca un producto para agregarlo. Luego ajusta cantidad y unidad.</p>
+                                                <p>Toca un producto para agregarlo y define cuánto y cada cuánto lo necesitas.</p>
                                             </div>
 
                                             <label className="quote-search">
@@ -312,7 +317,7 @@ function Quote() {
 
                                             {draft.items.length > 0 && (
                                                 <div className="quote-items">
-                                                    <h3>Cantidades</h3>
+                                                    <h3>Cantidad y frecuencia</h3>
                                                     {draft.items.map(it => {
                                                         const p = findProduct(it.slug);
                                                         return (
@@ -331,30 +336,41 @@ function Quote() {
                                                                         aria-label={`Detalle para ${p.name}`}
                                                                     />
                                                                 </div>
-                                                                <div className="quote-qty">
-                                                                    <button type="button" onClick={() => stepQty(it.slug, -10)} aria-label="Restar">
-                                                                        <Minus size={14} />
-                                                                    </button>
-                                                                    <input
-                                                                        type="number"
-                                                                        min="1"
-                                                                        inputMode="numeric"
-                                                                        value={it.quantity}
-                                                                        onChange={e => updateItem(it.slug, { quantity: e.target.value })}
-                                                                        aria-label={`Cantidad de ${p.name}`}
-                                                                    />
-                                                                    <button type="button" onClick={() => stepQty(it.slug, 10)} aria-label="Sumar">
-                                                                        <Plus size={14} />
-                                                                    </button>
+                                                                <div className="quote-order">
+                                                                    <div className="quote-qty">
+                                                                        <button type="button" onClick={() => stepQty(it.slug, -10)} aria-label="Restar">
+                                                                            <Minus size={14} />
+                                                                        </button>
+                                                                        <input
+                                                                            type="number"
+                                                                            min="1"
+                                                                            inputMode="numeric"
+                                                                            value={it.quantity}
+                                                                            onChange={e => updateItem(it.slug, { quantity: e.target.value })}
+                                                                            aria-label={`Cantidad de ${p.name}`}
+                                                                        />
+                                                                        <button type="button" onClick={() => stepQty(it.slug, 10)} aria-label="Sumar">
+                                                                            <Plus size={14} />
+                                                                        </button>
+                                                                    </div>
+                                                                    <select
+                                                                        className="quote-unit"
+                                                                        value={it.unit}
+                                                                        onChange={e => updateItem(it.slug, { unit: e.target.value })}
+                                                                        aria-label={`Unidad de ${p.name}`}
+                                                                    >
+                                                                        {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
+                                                                    </select>
+                                                                    <span className="quote-order-sep" aria-hidden="true">·</span>
+                                                                    <select
+                                                                        className="quote-unit quote-freq"
+                                                                        value={it.frequency}
+                                                                        onChange={e => updateItem(it.slug, { frequency: e.target.value })}
+                                                                        aria-label={`Frecuencia de ${p.name}`}
+                                                                    >
+                                                                        {FREQUENCIES.map(f => <option key={f} value={f}>{f}</option>)}
+                                                                    </select>
                                                                 </div>
-                                                                <select
-                                                                    className="quote-unit"
-                                                                    value={it.unit}
-                                                                    onChange={e => updateItem(it.slug, { unit: e.target.value })}
-                                                                    aria-label={`Unidad de ${p.name}`}
-                                                                >
-                                                                    {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
-                                                                </select>
                                                                 <button
                                                                     type="button"
                                                                     className="quote-item-remove"
@@ -378,18 +394,6 @@ function Quote() {
                                                 <h2>¿Cómo y dónde entregamos?</h2>
                                                 <p>Con esto calculamos logística y precio por volumen.</p>
                                             </div>
-
-                                            <fieldset className="quote-field">
-                                                <legend>Frecuencia de compra</legend>
-                                                <div className="quote-segment">
-                                                    {FREQUENCIES.map(f => (
-                                                        <label key={f} className={draft.frequency === f ? 'active' : ''}>
-                                                            <input type="radio" name="frequency" value={f} checked={draft.frequency === f} onChange={set('frequency')} />
-                                                            {f}
-                                                        </label>
-                                                    ))}
-                                                </div>
-                                            </fieldset>
 
                                             <div className="quote-grid-2">
                                                 <div className="form-group">
@@ -498,14 +502,13 @@ function Quote() {
                                                 return (
                                                     <li key={it.slug}>
                                                         <span>{p.name}</span>
-                                                        <strong>{it.quantity || 0} {it.unit}</strong>
+                                                        <strong>{it.quantity || 0} {it.unit}<small>{it.frequency}</small></strong>
                                                     </li>
                                                 );
                                             })}
                                         </ul>
                                     )}
                                     <dl className="quote-summary-meta">
-                                        <div><dt>Frecuencia</dt><dd>{draft.frequency}</dd></div>
                                         <div><dt>Entrega</dt><dd>{draft.city || '—'}</dd></div>
                                         <div><dt>Cliente</dt><dd>{draft.clientType || '—'}</dd></div>
                                     </dl>

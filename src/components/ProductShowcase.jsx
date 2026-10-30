@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Leaf } from 'lucide-react';
 import ProductImage from './ProductImage';
 import './ProductShowcase.css';
 
 const AUTOPLAY_MS = 5000;
+const CONFETTI = Array.from({ length: 10 }, (_, i) => i);
 
 /**
  * Carrusel de productos: círculo grande al centro con el producto actual y
@@ -52,28 +53,46 @@ function ProductShowcase({ products, index, onIndexChange, onDetails, showThumbs
             aria-roledescription="carrusel"
             aria-label="Productos"
         >
-            <div className="showcase-stage">
+            {/* La key de cada disco cambia con el producto: así el círculo
+                completo se vuelve a montar y repite su animación de entrada */}
+            <div className={`showcase-stage slide-${direction}`}>
                 <button type="button" className="showcase-circle showcase-side showcase-before" onClick={prev} aria-label={`Anterior: ${before.name}`}>
-                    <span className="showcase-circle-inner" key={`b-${before.slug}`}>
-                        <ProductImage src={before.image} alt="" name={before.name} />
+                    <span className="showcase-disc" key={`b-${before.slug}`}>
+                        <span className="showcase-circle-inner">
+                            <ProductImage src={before.image} alt="" name={before.name} />
+                        </span>
                     </span>
                 </button>
 
                 <button
                     type="button"
-                    className={`showcase-circle showcase-main slide-${direction}`}
+                    className="showcase-circle showcase-main"
                     onClick={() => onDetails(current)}
                     aria-label={`Ver detalles de ${current.name}`}
                 >
-                    <span className="showcase-ring" aria-hidden="true" />
-                    <span className="showcase-circle-inner" key={`m-${current.slug}`}>
-                        <ProductImage src={current.image} alt={current.altText} name={current.name} loading="eager" />
+                    <span className="showcase-burst" key={`burst-${current.slug}`} aria-hidden="true">
+                        <span className="showcase-wave" />
+                        <span className="showcase-wave showcase-wave-2" />
+                        {CONFETTI.map(i => (
+                            <span key={i} className="showcase-confetti" style={{ '--i': i }}>
+                                <Leaf size={18 + (i % 3) * 6} strokeWidth={2} fill="currentColor" fillOpacity={0.25} />
+                            </span>
+                        ))}
+                    </span>
+                    <span className="showcase-disc" key={`m-${current.slug}`}>
+                        <span className="showcase-ring" aria-hidden="true" />
+                        <span className="showcase-shine" aria-hidden="true" />
+                        <span className="showcase-circle-inner">
+                            <ProductImage src={current.image} alt={current.altText} name={current.name} loading="eager" />
+                        </span>
                     </span>
                 </button>
 
                 <button type="button" className="showcase-circle showcase-side showcase-after" onClick={next} aria-label={`Siguiente: ${after.name}`}>
-                    <span className="showcase-circle-inner" key={`a-${after.slug}`}>
-                        <ProductImage src={after.image} alt="" name={after.name} />
+                    <span className="showcase-disc" key={`a-${after.slug}`}>
+                        <span className="showcase-circle-inner">
+                            <ProductImage src={after.image} alt="" name={after.name} />
+                        </span>
                     </span>
                 </button>
             </div>

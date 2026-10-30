@@ -365,15 +365,9 @@
 .lab-products {
     padding: 7rem 0 8rem;
     position: relative;
+    overflow: hidden;
 }
 
-.lab-products-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-}
 
 .lab-products-foot {
     margin-top: 3rem;
@@ -764,9 +758,6 @@
    RESPONSIVE
    ============================== */
 @media (max-width: 1180px) {
-    .lab-products-grid {
-        max-width: 100%;
-    }
 }
 
 @media (max-width: 1024px) {
@@ -779,19 +770,11 @@
         gap: 3rem;
     }
     .lab-b2b-head { position: static; }
-    .lab-products-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.5rem;
-    }
 }
 
 @media (max-width: 900px) {
     .lab-hero { padding: 10rem 0 5rem; }
     .lab-hero-h { font-size: clamp(2.2rem, 6vw, 3.4rem); }
-    .lab-products-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-    }
     .lab-benefits {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
