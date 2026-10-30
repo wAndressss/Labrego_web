@@ -6,6 +6,9 @@ import {
     Check,
     CheckCircle,
     ClipboardList,
+    Download,
+    FileText,
+    Loader2,
     Mail,
     Minus,
     Package,
@@ -78,10 +81,18 @@ function loadDraft() {
     }
 }
 
-function buildMessage(d) {
+/** Número de referencia corto y legible: LAB-20261030-4F7K */
+function createQuoteReference(date = new Date()) {
+    const ymd = date.toISOString().slice(0, 10).replace(/-/g, '');
+    const suffix = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return `LAB-${ymd}-${suffix}`;
+}
+
+function buildMessage(d, reference) {
     const optional = (value, line) => (value ? [line] : []);
     return [
         '*Solicitud de cotización — Labrego*',
+        ...(reference ? [`*Referencia:* ${reference}`] : []),
         '',
         '*Productos:*',
         ...d.items.map(it => {
@@ -98,6 +109,7 @@ function buildMessage(d) {
         ...optional(d.company, `*Empresa:* ${d.company}${d.nit ? ` (NIT ${d.nit})` : ''}`),
         `*Teléfono:* ${d.phone}`,
         ...optional(d.email, `*Correo:* ${d.email}`),
+        ...(reference ? ['', `Adjunto la solicitud en PDF (Cotizacion-${reference}.pdf).`] : []),
     ].join('\n');
 }
 
@@ -120,6 +132,8 @@ function Quote() {
     const [errors, setErrors] = useState({});
     const [search, setSearch] = useState('');
     const [sent, setSent] = useState(false);
+    const [reference, setReference] = useState(null);
+    const [pdfStatus, setPdfStatus] = useState('idle'); // idle | generating | ready | error
 
     useEffect(() => {
         try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch { /* sin almacenamiento */ }
@@ -195,16 +209,33 @@ function Quote() {
         setStep(target);
     };
 
-    const message = buildMessage(draft);
-    const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-    const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(`Cotización — ${draft.company || draft.name}`)}&body=${encodeURIComponent(message.replace(/\*/g, ''))}`;
+    const whatsappHrefFor = (ref) => `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(buildMessage(draft, ref))}`;
+    const whatsappHref = whatsappHrefFor(reference);
+    const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(`Cotización ${reference || ''} — ${draft.company || draft.name}`)}&body=${encodeURIComponent(buildMessage(draft, reference).replace(/\*/g, ''))}`;
+
+    // El generador de PDF (jsPDF) se carga solo cuando se necesita
+    const downloadPdf = async (ref) => {
+        setPdfStatus('generating');
+        try {
+            const { downloadQuotePdf } = await import('../lib/quotePdf');
+            await downloadQuotePdf(draft, ref);
+            setPdfStatus('ready');
+        } catch (err) {
+            console.error('No se pudo generar el PDF de la cotización', err);
+            setPdfStatus('error');
+        }
+    };
 
     const submit = (ev) => {
         ev.preventDefault();
         const e = validate(2);
         setErrors(e);
         if (Object.keys(e).length) return;
-        window.open(whatsappHref, '_blank', 'noopener,noreferrer');
+        const ref = createQuoteReference();
+        setReference(ref);
+        // WhatsApp se abre primero, dentro del clic, para que el navegador no lo bloquee
+        window.open(whatsappHrefFor(ref), '_blank', 'noopener,noreferrer');
+        downloadPdf(ref);
         setSent(true);
     };
 
@@ -212,6 +243,8 @@ function Quote() {
         setDraft(emptyDraft);
         setStep(0);
         setSent(false);
+        setReference(null);
+        setPdfStatus('idle');
     };
 
     return (
@@ -236,10 +269,34 @@ function Quote() {
                         <div className="quote-done">
                             <span className="quote-done-icon"><CheckCircle size={56} strokeWidth={1.6} /></span>
                             <h2>¡Tu solicitud está lista!</h2>
+                            <p className="quote-done-ref">Referencia <strong>{reference}</strong></p>
                             <p>
-                                Abrimos WhatsApp con el resumen de tu pedido. Solo presiona <strong>enviar</strong> en el chat
-                                y nuestro equipo comercial te responderá en menos de 24 horas hábiles.
+                                Abrimos WhatsApp con el resumen de tu pedido y descargamos la solicitud en PDF.
+                                Adjunta el PDF en el chat y presiona <strong>enviar</strong>: nuestro equipo comercial
+                                te responderá en menos de 24 horas hábiles.
                             </p>
+                            <div className={`quote-pdf-card ${pdfStatus}`}>
+                                <span className="quote-pdf-icon"><FileText size={26} strokeWidth={1.6} /></span>
+                                <div>
+                                    <strong>Cotizacion-{reference}.pdf</strong>
+                                    <span>
+                                        {pdfStatus === 'generating' && 'Generando PDF...'}
+                                        {pdfStatus === 'ready' && 'PDF descargado en tu equipo'}
+                                        {pdfStatus === 'error' && 'No se pudo generar el PDF. Intenta de nuevo.'}
+                                    </span>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline quote-pdf-btn"
+                                    onClick={() => downloadPdf(reference)}
+                                    disabled={pdfStatus === 'generating'}
+                                >
+                                    {pdfStatus === 'generating'
+                                        ? <Loader2 size={18} className="quote-spin" />
+                                        : <Download size={18} />}
+                                    Descargar PDF
+                                </button>
+                            </div>
                             <div className="quote-done-actions">
                                 <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                                     Abrir WhatsApp de nuevo <ArrowRight size={18} />

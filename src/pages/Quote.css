@@ -712,7 +712,7 @@
 
 /* ---------- Done ---------- */
 .quote-done {
-    max-width: 560px;
+    max-width: 640px;
     margin: 0 auto;
     text-align: center;
     padding: 3rem 1.5rem;
@@ -743,6 +743,83 @@
 .quote-done p {
     color: var(--color-text-muted);
     margin-bottom: 1.75rem;
+}
+
+.quote-done-ref {
+    margin-bottom: 0.75rem !important;
+    font-size: 0.9rem;
+}
+
+.quote-done-ref strong {
+    font-family: var(--font-mono);
+    color: var(--color-secondary);
+    letter-spacing: 0.02em;
+}
+
+/* Tarjeta del PDF generado */
+.quote-pdf-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 auto 1.75rem;
+    padding: 1rem 1.1rem;
+    text-align: left;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-paper);
+    border: 1px dashed rgba(61, 90, 31, 0.35);
+    animation: quote-item-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+
+.quote-pdf-card > div {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.quote-pdf-card strong {
+    font-size: 0.9rem;
+    color: var(--color-bg-ink);
+    overflow-wrap: anywhere;
+}
+
+.quote-pdf-card > div span {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+}
+
+.quote-pdf-card.ready > div span {
+    color: var(--color-primary-dark);
+}
+
+.quote-pdf-card.error > div span {
+    color: var(--color-danger);
+}
+
+.quote-pdf-icon {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #c0392b;
+    color: #fff;
+    box-shadow: 0 10px 20px -10px rgba(192, 57, 43, 0.7);
+}
+
+.quote-pdf-btn {
+    padding: 0.65rem 1.1rem;
+}
+
+.quote-spin {
+    animation: quote-spin 0.9s linear infinite;
+}
+
+@keyframes quote-spin {
+    to { transform: rotate(360deg); }
 }
 
 .quote-done-actions {
