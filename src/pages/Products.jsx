@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, X, Download, MessageSquare, Search, Sprout, FileText, ClipboardList } from 'lucide-react';
+import { ArrowUpRight, X, Download, Search, Sprout, ShieldCheck, Award, Truck, MapPin, Package, Clock } from 'lucide-react';
 import { useSeo } from '../hooks/useSeo';
 import { useReveal } from '../hooks/useReveal';
+import { useMouseTilt } from '../hooks/useMouseTilt';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ProductImage from '../components/ProductImage';
 import { catalog } from '../data/products';
@@ -16,6 +16,51 @@ const categoryCounts = categoryNames.reduce((acc, name) => {
     return acc;
 }, {});
 
+// Datos clave que se muestran destacados en la ficha
+const highlights = [
+    { key: 'origen', label: 'Origen', icon: MapPin },
+    { key: 'empaque', label: 'Empaque', icon: Package },
+    { key: 'vidaUtil', label: 'Vida útil', icon: Clock },
+];
+
+const trustPoints = [
+    { icon: ShieldCheck, title: 'Trazabilidad por lote', text: 'Cada despacho identifica finca, fecha de cosecha y lote.' },
+    { icon: Award, title: 'Calidad exportación', text: 'Selección por calibre y buenas prácticas agrícolas certificadas.' },
+    { icon: Truck, title: 'Entregas programadas', text: 'Volumen estable y logística coordinada con tu operación.' },
+];
+
+function ProductCard({ product, index, onOpen }) {
+    const tiltRef = useMouseTilt(6);
+    return (
+        <article
+            ref={tiltRef}
+            className="catalog-card"
+            style={{ animationDelay: `${Math.min(index, 8) * 70}ms` }}
+        >
+            <button type="button" className="catalog-card-btn" onClick={() => onOpen(product)} aria-label={`Ver ficha técnica de ${product.name}`}>
+                <div className="catalog-img-wrap">
+                    <span className="catalog-halo" aria-hidden="true" />
+                    <ProductImage
+                        src={product.image}
+                        alt={product.altText}
+                        name={product.name}
+                        className="catalog-img"
+                    />
+                    <span className="catalog-category">{product.category}</span>
+                </div>
+                <div className="catalog-content">
+                    <h3 className="catalog-name">{product.name}</h3>
+                    <p className="catalog-desc">{product.description}</p>
+                    <span className="catalog-more">
+                        Ver ficha técnica
+                        <span className="catalog-more-icon" aria-hidden="true"><ArrowUpRight size={16} /></span>
+                    </span>
+                </div>
+            </button>
+        </article>
+    );
+}
+
 const formatLabel = (key) => key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
 
 function Products() {
@@ -25,7 +70,6 @@ function Products() {
         path: '/productos',
     });
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const navigate = useNavigate();
     const [filter, setFilter] = useState('Todos');
     const [search, setSearch] = useState('');
     const modalRef = useRef(null);
@@ -55,8 +99,6 @@ function Products() {
             document.body.style.overflow = '';
         };
     }, [selectedProduct]);
-
-    const openQuote = (product) => navigate(`/cotizar?producto=${product.slug}`);
 
     const handleDatasheet = (product) => {
         const rows = Object.entries(product.specs)
@@ -96,7 +138,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
         setTimeout(() => URL.revokeObjectURL(url), 60_000);
     };
 
-    const [gridRef, gridVisible] = useReveal(0.05);
+    const [trustRef, trustVisible] = useReveal(0.2);
 
     return (
         <div className="catalog-page">
@@ -112,11 +154,21 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                 </div>
             </section>
 
-            <section className="section bg-slate pb-5">
+            <section className="catalog-section">
                 <div className="container">
+                    <div className="catalog-intro">
+                        <div>
+                            <span className="catalog-eyebrow">Catálogo {new Date().getFullYear()}</span>
+                            <h2 className="catalog-title">Elige un producto para ver su ficha técnica</h2>
+                        </div>
+                        <p className="catalog-count" aria-live="polite">
+                            <strong>{filtered.length}</strong> {filtered.length === 1 ? 'producto' : 'productos'}
+                        </p>
+                    </div>
+
                     <div className="catalog-toolbar">
-                        <div className="catalog-search">
-                            <Search size={18} />
+                        <label className="catalog-search">
+                            <Search size={18} aria-hidden="true" />
                             <input
                                 type="search"
                                 placeholder="Buscar producto..."
@@ -124,8 +176,8 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                                 onChange={(e) => setSearch(e.target.value)}
                                 aria-label="Buscar producto"
                             />
-                        </div>
-                        <div className="catalog-filters" role="tablist">
+                        </label>
+                        <div className="catalog-filters" role="tablist" aria-label="Categorías">
                             {categoryNames.map(c => (
                                 <button
                                     key={c}
@@ -134,7 +186,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                                     role="tab"
                                     aria-selected={filter === c}
                                 >
-                                    {c} <span className="chip-count">({categoryCounts[c]})</span>
+                                    {c} <span className="chip-count">{categoryCounts[c]}</span>
                                 </button>
                             ))}
                         </div>
@@ -148,46 +200,26 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                             </button>
                         </div>
                     ) : (
-                        <div className={`catalog-grid ${gridVisible ? 'visible' : ''}`} ref={gridRef}>
+                        <div className="catalog-grid" key={filter + search}>
                             {filtered.map((product, i) => (
-                                <article key={product.id} className="card catalog-card reveal-up" style={{ transitionDelay: `${Math.min(i, 8) * 60}ms` }}>
-                                    <div className="catalog-img-wrap">
-                                        <ProductImage
-                                            src={product.image}
-                                            alt={product.altText}
-                                            name={product.name}
-                                            className="catalog-img"
-                                        />
-                                        <div className="catalog-category">{product.category}</div>
-                                    </div>
-                                    <div className="catalog-content">
-                                        <h3 className="catalog-name">{product.name}</h3>
-                                        <p className="catalog-desc">{product.description}</p>
-                                        <div className="catalog-card-actions">
-                                            <button onClick={() => openModal(product)} className="btn btn-outline">
-                                                <FileText size={16} /> Ficha
-                                            </button>
-                                            <Link to={`/cotizar?producto=${product.slug}`} className="btn btn-primary">
-                                                Cotizar <ArrowRight size={16} />
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </article>
+                                <ProductCard key={product.id} product={product} index={i} onOpen={openModal} />
                             ))}
                         </div>
                     )}
 
-                    <div className="catalog-quote-band">
-                        <span className="catalog-quote-icon" aria-hidden="true">
-                            <ClipboardList size={26} strokeWidth={1.6} />
-                        </span>
-                        <div>
-                            <h2>¿Necesitas varios productos?</h2>
-                            <p>Arma una sola cotización con todo tu pedido: cantidades, frecuencia y destino.</p>
-                        </div>
-                        <Link to="/cotizar" className="btn btn-primary">
-                            Cotizar pedido <ArrowRight size={18} />
-                        </Link>
+                    <div className={`catalog-trust reveal-stagger ${trustVisible ? 'visible' : ''}`} ref={trustRef}>
+                        {trustPoints.map(t => {
+                            const Icon = t.icon;
+                            return (
+                                <div key={t.title} className="catalog-trust-item">
+                                    <span className="catalog-trust-icon"><Icon size={22} strokeWidth={1.6} /></span>
+                                    <div>
+                                        <strong>{t.title}</strong>
+                                        <span>{t.text}</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -205,13 +237,14 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                             ref={closeBtnRef}
                             className="modal-close"
                             onClick={closeModal}
-                            aria-label="Cerrar modal"
+                            aria-label="Cerrar ficha técnica"
                         >
-                            <X size={22} />
+                            <X size={20} />
                         </button>
 
                         <div className="modal-body">
                             <div className="modal-image-col">
+                                <span className="catalog-halo" aria-hidden="true" />
                                 <ProductImage
                                     src={selectedProduct.image}
                                     alt={selectedProduct.altText}
@@ -232,30 +265,41 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                                 <h2 id="modal-title">{selectedProduct.name}</h2>
                                 <p className="modal-desc">{selectedProduct.description}</p>
 
-                                <h4 className="specs-title">Especificaciones Técnicas</h4>
-                                <ul className="specs-list">
-                                    {Object.entries(selectedProduct.specs).map(([key, value]) => (
-                                        <li key={key}>
-                                            <strong>{formatLabel(key)}</strong>
-                                            <span>{value}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <div className="modal-highlights">
+                                    {highlights.filter(h => selectedProduct.specs[h.key]).map(h => {
+                                        const Icon = h.icon;
+                                        return (
+                                            <div key={h.key} className="modal-highlight">
+                                                <Icon size={18} strokeWidth={1.7} />
+                                                <span>{h.label}</span>
+                                                <strong>{selectedProduct.specs[h.key]}</strong>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <h4 className="specs-title">Especificaciones técnicas</h4>
+                                <dl className="specs-list">
+                                    {Object.entries(selectedProduct.specs)
+                                        .filter(([key]) => !highlights.some(h => h.key === key))
+                                        .map(([key, value]) => (
+                                            <div key={key}>
+                                                <dt>{formatLabel(key)}</dt>
+                                                <dd>{value}</dd>
+                                            </div>
+                                        ))}
+                                </dl>
 
                                 <div className="modal-actions">
                                     <button
                                         type="button"
                                         className="btn btn-primary"
-                                        onClick={() => openQuote(selectedProduct)}
-                                    >
-                                        <MessageSquare size={18} /> Solicitar Cotización
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline"
                                         onClick={() => handleDatasheet(selectedProduct)}
                                     >
-                                        <Download size={18} /> Ficha Técnica
+                                        <Download size={18} /> Descargar ficha técnica
+                                    </button>
+                                    <button type="button" className="btn btn-outline" onClick={closeModal}>
+                                        Cerrar
                                     </button>
                                 </div>
                             </div>
@@ -263,7 +307,6 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                     </div>
                 </div>
             )}
-
         </div>
     );
 }

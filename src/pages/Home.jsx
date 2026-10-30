@@ -386,12 +386,8 @@ function Home() {
                                             onClick={() => setOpenSpec(p)}
                                         >
                                             <FileText size={14} />
-                                            Ficha técnica
+                                            Ver ficha técnica
                                         </button>
-                                        <Link to={`/cotizar?producto=${p.slug}`} className="lab-btn lab-btn-olive lab-btn-sm">
-                                            Cotizar
-                                            <ArrowRight size={14} />
-                                        </Link>
                                     </div>
                                 </div>
                             </article>
@@ -488,8 +484,8 @@ function Home() {
                             </tbody>
                         </table>
                         <div className="lab-modal-actions">
-                            <Link to={`/cotizar?producto=${openSpec.slug}`} className="lab-btn lab-btn-olive" onClick={() => setOpenSpec(null)}>
-                                Solicitar cotización
+                            <Link to="/productos" className="lab-btn lab-btn-olive" onClick={() => setOpenSpec(null)}>
+                                Ver catálogo completo
                                 <ArrowRight size={16} />
                             </Link>
                             <button type="button" className="lab-btn lab-btn-outline" onClick={() => setOpenSpec(null)}>
