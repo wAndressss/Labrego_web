@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     ArrowRight,
     Sparkles,
@@ -9,13 +9,12 @@ import {
     Leaf,
     Building2,
     PackageCheck,
-    X,
-    FileText,
     ClipboardList,
     Package,
     MessageCircle,
 } from 'lucide-react';
-import ProductImage from '../components/ProductImage';
+import ProductShowcase from '../components/ProductShowcase';
+import { catalog } from '../data/products';
 import ClientTicker from '../components/home/ClientTicker';
 import Counter from '../components/Counter';
 import { useSeo } from '../hooks/useSeo';
@@ -23,63 +22,6 @@ import { useReveal } from '../hooks/useReveal';
 import { useParallax } from '../hooks/useParallax';
 import { useScrollProgress } from '../hooks/useScrollProgress';
 import './Home.css';
-
-const products = [
-    {
-        name: 'Plátano Bolsa',
-        slug: 'platano-bolsa',
-        img: '/productos/platano_bolsa.webp',
-        tag: 'Industria',
-        meta: 'Musa AAB · Quindío',
-        desc: 'Dominico-hartón embolsado en campo, libre de manchas y de calibre uniforme.',
-        specs: {
-            'Variedad': 'Dominico-Hartón embolsado (Musa AAB)',
-            'Origen': 'Quindío, Colombia',
-            'Calibre': '25 – 32 cm · Ø 50 – 60 mm',
-            'Empaque': 'Caja cartón 22.7 kg · canastilla 20 – 22 kg',
-            'Conservación': '13 – 14 °C · HR 90 %',
-            'Vida útil': '18 – 25 días',
-            'Disponibilidad': 'Todo el año',
-            'Certificaciones': 'GLOBAL G.A.P. · BPA',
-        },
-    },
-    {
-        name: 'Banano Común',
-        slug: 'banano-comun',
-        img: '/productos/banano_comun.webp',
-        tag: 'Retail',
-        meta: 'Cavendish · AAA',
-        desc: 'Madurez controlada para góndola. Logística en frío sin interrupción.',
-        specs: {
-            'Variedad': 'Cavendish (Musa AAA)',
-            'Origen': 'Urabá / Magdalena, Colombia',
-            'Calibre': 'Grado 39 – 46 mm',
-            'Empaque': 'Caja 18.14 kg · 13 kg',
-            'Conservación': '13 – 14 °C · HR 85 %',
-            'Vida útil': '28 – 35 días',
-            'Disponibilidad': 'Todo el año',
-            'Certificaciones': 'GLOBAL G.A.P. · Rainforest',
-        },
-    },
-    {
-        name: 'Aguacate Papelillo',
-        slug: 'aguacate-papelillo',
-        img: '/productos/aguacate_papelillo.webp',
-        tag: 'Premium',
-        meta: 'Persea americana',
-        desc: 'Pulpa cremosa, cáscara delgada. Selección por calibre para retail premium.',
-        specs: {
-            'Variedad': 'Papelillo · Persea americana',
-            'Origen': 'Eje cafetero, Colombia',
-            'Calibre': '180 – 320 g por unidad',
-            'Empaque': 'Caja 4 kg · 10 kg',
-            'Conservación': '5 – 7 °C · HR 90 %',
-            'Vida útil': '14 – 21 días',
-            'Disponibilidad': 'Marzo – Septiembre',
-            'Certificaciones': 'GLOBAL G.A.P.',
-        },
-    },
-];
 
 const benefits = [
     {
@@ -135,18 +77,8 @@ function Home() {
     const cineImgRef = useParallax(0.15, { scale: 0.0006 });
     const [cineRef, cineProgress] = useScrollProgress();
 
-    const [openSpec, setOpenSpec] = useState(null);
-
-    useEffect(() => {
-        if (!openSpec) return;
-        const onKey = (e) => { if (e.key === 'Escape') setOpenSpec(null); };
-        document.body.style.overflow = 'hidden';
-        document.addEventListener('keydown', onKey);
-        return () => {
-            document.body.style.overflow = '';
-            document.removeEventListener('keydown', onKey);
-        };
-    }, [openSpec]);
+    const navigate = useNavigate();
+    const [showcaseIndex, setShowcaseIndex] = useState(0);
 
     return (
         <div className="lab-home">
@@ -168,6 +100,10 @@ function Home() {
                         Abastecimiento de{' '}
                         <span className="lab-accent">alimentos frescos en volumen real.</span>
                     </h1>
+
+                    <p className={`lab-hero-script script-text reveal-up ${heroVisible ? 'visible' : ''}`}>
+                        Cultivamos calidad. Cosechamos confianza.
+                    </p>
 
                     <p className={`lab-hero-lead reveal-up ${heroVisible ? 'visible' : ''}`}>
                         Producimos y abastecemos frutas y cárnicos
@@ -353,8 +289,8 @@ function Home() {
                 </div>
             </section>
 
-            {/* PRODUCTS — catálogo teaser */}
-            <section className="lab-products" ref={productsRef} aria-label="Catálogo destacado">
+            {/* PRODUCTS — carrusel */}
+            <section className="lab-products leaf-pattern" ref={productsRef} aria-label="Nuestros productos">
                 <div className="container">
                     <header className={`lab-section-head lab-section-head-center reveal-up ${productsVisible ? 'visible' : ''}`}>
                         <span className="lab-eyebrow">Catálogo</span>
@@ -362,37 +298,14 @@ function Home() {
                             Productos que ya están en{' '}
                             <span className="lab-accent">tu próximo pedido</span>.
                         </h2>
-                        <p className="lab-section-lead">
-                            Selección curada para volumen mayorista. Calidad consistente,
-                            calibres definidos y disponibilidad anual.
-                        </p>
                     </header>
 
-                    <div className={`lab-products-grid reveal-stagger ${productsVisible ? 'visible' : ''}`}>
-                        {products.map((p) => (
-                            <article key={p.name} className="lab-product-card">
-                                <div className="lab-product-img">
-                                    <ProductImage src={p.img} alt={p.name} name={p.name} />
-                                    <span className="lab-product-tag">{p.tag}</span>
-                                </div>
-                                <div className="lab-product-body">
-                                    <span className="lab-product-meta">{p.meta}</span>
-                                    <h3 className="lab-product-name">{p.name}</h3>
-                                    <p className="lab-product-desc">{p.desc}</p>
-                                    <div className="lab-product-actions">
-                                        <button
-                                            type="button"
-                                            className="lab-btn lab-btn-card"
-                                            onClick={() => setOpenSpec(p)}
-                                        >
-                                            <FileText size={14} />
-                                            Ver ficha técnica
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
+                    <ProductShowcase
+                        products={catalog}
+                        index={showcaseIndex}
+                        onIndexChange={setShowcaseIndex}
+                        onDetails={(p) => navigate(`/productos?producto=${p.slug}`)}
+                    />
 
                     <div className="lab-products-foot">
                         <Link to="/productos" className="lab-btn lab-btn-outline">
@@ -445,56 +358,6 @@ function Home() {
 
             <ClientTicker />
 
-            {/* SPEC MODAL */}
-            {openSpec && (
-                <div
-                    className="lab-modal-backdrop"
-                    onClick={() => setOpenSpec(null)}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label={`Ficha técnica ${openSpec.name}`}
-                >
-                    <div className="lab-modal" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            type="button"
-                            className="lab-modal-close"
-                            onClick={() => setOpenSpec(null)}
-                            aria-label="Cerrar"
-                        >
-                            <X size={18} />
-                        </button>
-                        <div className="lab-modal-head">
-                            <div className="lab-modal-img">
-                                <ProductImage src={openSpec.img} alt={openSpec.name} name={openSpec.name} loading="eager" />
-                            </div>
-                            <div>
-                                <span className="lab-modal-tag">{openSpec.tag}</span>
-                                <h3 className="lab-modal-title">{openSpec.name}</h3>
-                                <p className="lab-modal-desc">{openSpec.desc}</p>
-                            </div>
-                        </div>
-                        <table className="lab-modal-table">
-                            <tbody>
-                                {Object.entries(openSpec.specs).map(([k, v]) => (
-                                    <tr key={k}>
-                                        <th scope="row">{k}</th>
-                                        <td>{v}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <div className="lab-modal-actions">
-                            <Link to="/productos" className="lab-btn lab-btn-olive" onClick={() => setOpenSpec(null)}>
-                                Ver catálogo completo
-                                <ArrowRight size={16} />
-                            </Link>
-                            <button type="button" className="lab-btn lab-btn-outline" onClick={() => setOpenSpec(null)}>
-                                Cerrar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

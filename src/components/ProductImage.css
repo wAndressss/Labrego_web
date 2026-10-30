@@ -31,9 +31,6 @@
 /* Las fotos de producto son recortes sobre fondo claro: mostrarlas
    completas (sin recortar) para que fotos anchas como la del cerdo
    no pierdan partes. */
-.catalog-img,
-.lab-product-img img,
-.lab-modal-img img,
 .modal-image-col img,
 .quote-pick-img img,
 .quote-item-img img {

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, ClipboardList } from 'lucide-react';
+import { Menu, X, ChevronDown, ClipboardList, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './Header.css';
 
@@ -55,91 +55,94 @@ function Header() {
     return (
         <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
             <div className="container header-container">
-                <Link to="/" className="logo-link" aria-label="Labrego — Inicio" onClick={closeAll}>
-                    {!logoFailed ? (
-                        <img
-                            src={isScrolled ? '/logo.png' : '/logo-white.png'}
-                            alt="Labrego"
-                            className="header-logo"
-                            onError={() => setLogoFailed(true)}
-                        />
-                    ) : (
-                        <span className="logo-text-fallback">LABREGO</span>
-                    )}
-                </Link>
-
-                <nav className="desktop-nav" aria-label="Principal">
-                    <ul className="nav-links">
-                        <li>
-                            <Link to="/" className={isActive('/') ? 'active' : ''} aria-current={ariaCurrent('/')} onClick={closeAll}>Inicio</Link>
-                        </li>
-                        <li className="has-dropdown" ref={dropdownRef}>
-                            <button
-                                type="button"
-                                className={`dropdown-toggle ${empresaActive ? 'active' : ''}`}
-                                aria-expanded={dropdownOpen}
-                                aria-haspopup="true"
-                                aria-current={empresaActive ? 'page' : undefined}
-                                onClick={() => setDropdownOpen(v => !v)}
-                            >
-                                Empresa <ChevronDown size={14} className={`chevron ${dropdownOpen ? 'rotated' : ''}`} />
-                            </button>
-                            <div className={`dropdown-menu ${dropdownOpen ? 'open' : ''}`} role="menu">
-                                <Link
-                                    to="/empresa"
-                                    role="menuitem"
-                                    className={isActive('/empresa') ? 'active' : ''}
-                                    aria-current={ariaCurrent('/empresa')}
-                                    onClick={closeAll}
-                                >
-                                    Quiénes Somos
-                                </Link>
-                                <Link
-                                    to="/trabaja-con-nosotros"
-                                    role="menuitem"
-                                    className={isActive('/trabaja-con-nosotros') ? 'active' : ''}
-                                    aria-current={ariaCurrent('/trabaja-con-nosotros')}
-                                    onClick={closeAll}
-                                >
-                                    Trabaja con Nosotros
-                                </Link>
-                            </div>
-                        </li>
-                        <li>
-                            <Link to="/productos" className={isActive('/productos') ? 'active' : ''} aria-current={ariaCurrent('/productos')} onClick={closeAll}>Productos</Link>
-                        </li>
-                        <li>
-                            <Link to="/contacto" className={isActive('/contacto') ? 'active' : ''} aria-current={ariaCurrent('/contacto')} onClick={closeAll}>Contacto</Link>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div className="header-actions">
-                    <a
-                        href="https://www.proveedores.labrego.com.co"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="header-portal"
-                        onClick={closeAll}
-                    >
-                        Portal Proveedores
-                    </a>
-                    <Link
-                        to="/cotizar"
-                        className={`header-cta ${isActive('/cotizar') ? 'active' : ''}`}
-                        aria-current={ariaCurrent('/cotizar')}
-                        onClick={closeAll}
-                    >
-                        <ClipboardList size={16} /> Cotizar
+                <div className="header-bar">
+                    <Link to="/" className="logo-link" aria-label="Labrego — Inicio" onClick={closeAll}>
+                        {!logoFailed ? (
+                            <img
+                                src="/logo-dark.png"
+                                alt="Labrego"
+                                className="header-logo"
+                                onError={() => setLogoFailed(true)}
+                            />
+                        ) : (
+                            <span className="logo-text-fallback">LABREGO</span>
+                        )}
                     </Link>
-                    <button
-                        className="mobile-menu-btn"
-                        onClick={() => setMobileMenuOpen(v => !v)}
-                        aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
-                        aria-expanded={mobileMenuOpen}
-                    >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+
+                    <nav className="desktop-nav" aria-label="Principal">
+                        <ul className="nav-links">
+                            <li>
+                                <Link to="/" className={isActive('/') ? 'active' : ''} aria-current={ariaCurrent('/')} onClick={closeAll}>Inicio</Link>
+                            </li>
+                            <li className="has-dropdown" ref={dropdownRef}>
+                                <button
+                                    type="button"
+                                    className={`dropdown-toggle ${empresaActive ? 'active' : ''}`}
+                                    aria-expanded={dropdownOpen}
+                                    aria-haspopup="true"
+                                    aria-current={empresaActive ? 'page' : undefined}
+                                    onClick={() => setDropdownOpen(v => !v)}
+                                >
+                                    Empresa <ChevronDown size={14} className={`chevron ${dropdownOpen ? 'rotated' : ''}`} />
+                                </button>
+                                <div className={`dropdown-menu ${dropdownOpen ? 'open' : ''}`} role="menu">
+                                    <Link
+                                        to="/empresa"
+                                        role="menuitem"
+                                        className={isActive('/empresa') ? 'active' : ''}
+                                        aria-current={ariaCurrent('/empresa')}
+                                        onClick={closeAll}
+                                    >
+                                        Quiénes Somos
+                                    </Link>
+                                    <Link
+                                        to="/trabaja-con-nosotros"
+                                        role="menuitem"
+                                        className={isActive('/trabaja-con-nosotros') ? 'active' : ''}
+                                        aria-current={ariaCurrent('/trabaja-con-nosotros')}
+                                        onClick={closeAll}
+                                    >
+                                        Trabaja con Nosotros
+                                    </Link>
+                                    <a
+                                        href="https://www.proveedores.labrego.com.co"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        role="menuitem"
+                                        onClick={closeAll}
+                                    >
+                                        Portal Proveedores <ArrowUpRight size={14} />
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <Link to="/productos" className={isActive('/productos') ? 'active' : ''} aria-current={ariaCurrent('/productos')} onClick={closeAll}>Productos</Link>
+                            </li>
+                            <li>
+                                <Link to="/contacto" className={isActive('/contacto') ? 'active' : ''} aria-current={ariaCurrent('/contacto')} onClick={closeAll}>Contacto</Link>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div className="header-actions">
+                        <Link
+                            to="/cotizar"
+                            className={`header-cta ${isActive('/cotizar') ? 'active' : ''}`}
+                            aria-current={ariaCurrent('/cotizar')}
+                            onClick={closeAll}
+                        >
+                            Cotizar
+                            <span className="header-cta-arrow" aria-hidden="true"><ArrowRight size={15} /></span>
+                        </Link>
+                        <button
+                            className="mobile-menu-btn"
+                            onClick={() => setMobileMenuOpen(v => !v)}
+                            aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+                            aria-expanded={mobileMenuOpen}
+                        >
+                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </div>
             </div>
 

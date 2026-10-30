@@ -38,6 +38,7 @@ function Footer() {
                     ) : (
                         <div className="footer-logo">LABREGO</div>
                     )}
+                    <p className="footer-tagline script-text">Cultivamos calidad. Cosechamos confianza.</p>
                     <p className="footer-desc">
                         Plátano, banano, aguacate, limón y cárnicos para empresas, con los más altos estándares de calidad.
                     </p>

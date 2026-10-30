@@ -1,20 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, X, Download, Search, Sprout, ShieldCheck, Award, Truck, MapPin, Package, Clock } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { X, Download, Sprout, ShieldCheck, Award, Truck, MapPin, Package, Clock } from 'lucide-react';
 import { useSeo } from '../hooks/useSeo';
 import { useReveal } from '../hooks/useReveal';
-import { useMouseTilt } from '../hooks/useMouseTilt';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ProductImage from '../components/ProductImage';
+import ProductShowcase from '../components/ProductShowcase';
 import { catalog } from '../data/products';
 import './Products.css';
-
-
-const categoryNames = ['Todos', ...new Set(catalog.map(p => p.category))];
-
-const categoryCounts = categoryNames.reduce((acc, name) => {
-    acc[name] = name === 'Todos' ? catalog.length : catalog.filter(p => p.category === name).length;
-    return acc;
-}, {});
 
 // Datos clave que se muestran destacados en la ficha
 const highlights = [
@@ -29,38 +22,6 @@ const trustPoints = [
     { icon: Truck, title: 'Entregas programadas', text: 'Volumen estable y logística coordinada con tu operación.' },
 ];
 
-function ProductCard({ product, index, onOpen }) {
-    const tiltRef = useMouseTilt(6);
-    return (
-        <article
-            ref={tiltRef}
-            className="catalog-card"
-            style={{ animationDelay: `${Math.min(index, 8) * 70}ms` }}
-        >
-            <button type="button" className="catalog-card-btn" onClick={() => onOpen(product)} aria-label={`Ver ficha técnica de ${product.name}`}>
-                <div className="catalog-img-wrap">
-                    <span className="catalog-halo" aria-hidden="true" />
-                    <ProductImage
-                        src={product.image}
-                        alt={product.altText}
-                        name={product.name}
-                        className="catalog-img"
-                    />
-                    <span className="catalog-category">{product.category}</span>
-                </div>
-                <div className="catalog-content">
-                    <h3 className="catalog-name">{product.name}</h3>
-                    <p className="catalog-desc">{product.description}</p>
-                    <span className="catalog-more">
-                        Ver ficha técnica
-                        <span className="catalog-more-icon" aria-hidden="true"><ArrowUpRight size={16} /></span>
-                    </span>
-                </div>
-            </button>
-        </article>
-    );
-}
-
 const formatLabel = (key) => key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase());
 
 function Products() {
@@ -69,16 +30,12 @@ function Products() {
         description: 'Catálogo corporativo de plátano y banano Labrego: calidad exportación, trazabilidad completa y empaques industriales. Descubre nuestras variedades.',
         path: '/productos',
     });
+    const [searchParams] = useSearchParams();
+    // ?producto=slug (desde el inicio) abre el carrusel en ese producto
+    const [index, setIndex] = useState(() => Math.max(0, catalog.findIndex(p => p.slug === searchParams.get('producto'))));
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [filter, setFilter] = useState('Todos');
-    const [search, setSearch] = useState('');
     const modalRef = useRef(null);
     const closeBtnRef = useRef(null);
-
-    const filtered = catalog.filter(p =>
-        (filter === 'Todos' || p.category === filter) &&
-        (p.name.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase()))
-    );
 
     const openModal = (product) => setSelectedProduct(product);
     const closeModal = () => setSelectedProduct(null);
@@ -154,58 +111,21 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                 </div>
             </section>
 
-            <section className="catalog-section">
+            <section className="catalog-section leaf-pattern">
                 <div className="container">
                     <div className="catalog-intro">
-                        <div>
-                            <span className="catalog-eyebrow">Catálogo {new Date().getFullYear()}</span>
-                            <h2 className="catalog-title">Elige un producto para ver su ficha técnica</h2>
-                        </div>
-                        <p className="catalog-count" aria-live="polite">
-                            <strong>{filtered.length}</strong> {filtered.length === 1 ? 'producto' : 'productos'}
-                        </p>
+                        <span className="catalog-eyebrow">Nuestros productos</span>
+                        <h2 className="catalog-title">Del campo colombiano a tu operación</h2>
+                        <p className="catalog-lead script-text">Cultivamos calidad. Cosechamos confianza.</p>
                     </div>
 
-                    <div className="catalog-toolbar">
-                        <label className="catalog-search">
-                            <Search size={18} aria-hidden="true" />
-                            <input
-                                type="search"
-                                placeholder="Buscar producto..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                aria-label="Buscar producto"
-                            />
-                        </label>
-                        <div className="catalog-filters" role="tablist" aria-label="Categorías">
-                            {categoryNames.map(c => (
-                                <button
-                                    key={c}
-                                    className={`filter-chip ${filter === c ? 'active' : ''}`}
-                                    onClick={() => setFilter(c)}
-                                    role="tab"
-                                    aria-selected={filter === c}
-                                >
-                                    {c} <span className="chip-count">{categoryCounts[c]}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {filtered.length === 0 ? (
-                        <div className="catalog-empty">
-                            <p>No se encontraron productos con los filtros seleccionados.</p>
-                            <button className="btn btn-outline" onClick={() => { setFilter('Todos'); setSearch(''); }}>
-                                Limpiar filtros
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="catalog-grid" key={filter + search}>
-                            {filtered.map((product, i) => (
-                                <ProductCard key={product.id} product={product} index={i} onOpen={openModal} />
-                            ))}
-                        </div>
-                    )}
+                    <ProductShowcase
+                        products={catalog}
+                        index={index}
+                        onIndexChange={setIndex}
+                        onDetails={openModal}
+                        showThumbs
+                    />
 
                     <div className={`catalog-trust reveal-stagger ${trustVisible ? 'visible' : ''}`} ref={trustRef}>
                         {trustPoints.map(t => {
