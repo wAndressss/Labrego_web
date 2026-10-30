@@ -8,7 +8,7 @@ export const catalog = [
         name: 'Aguacate Común',
         category: 'Frutas Frescas',
         description: 'Aguacate criollo antillano de pulpa cremosa y sabor tradicional. Ideal para consumo fresco y mercados mayoristas en plaza.',
-        image: '/productos/aguacate_comun.png',
+        image: '/productos/aguacate_comun.webp',
         altText: 'Fotografía de aguacate común criollo antillano de pulpa cremosa, calidad mercado nacional',
         specs: {
             nombreCientifico: 'Persea americana var. drymifolia',
@@ -29,7 +29,7 @@ export const catalog = [
         name: 'Aguacate Papelillo',
         category: 'Frutas Frescas',
         description: 'Variedad de cáscara delgada y pulpa amarilla cremosa, raza guatemalteca-antillana. Alta demanda en mercados nacionales y supermercados.',
-        image: '/productos/aguacate_papelillo.png',
+        image: '/productos/aguacate_papelillo.webp',
         altText: 'Fotografía de aguacate Papelillo de cáscara delgada y pulpa amarilla cremosa, calidad supermercado',
         specs: {
             nombreCientifico: 'Persea americana Mill.',
@@ -69,7 +69,7 @@ export const catalog = [
         name: 'Cerdos en Canal',
         category: 'Cárnicos',
         description: 'Canal porcina fresca de cruces comerciales, faenada bajo normativa INVIMA. Trazabilidad completa desde granja certificada PorkColombia.',
-        image: '/productos/cerdos_canal.png',
+        image: '/productos/cerdos_canal.webp',
         altText: 'Fotografía referencial de canal porcina fresca cruces comerciales bajo norma INVIMA',
         specs: {
             nombreCientifico: 'Sus scrofa domesticus',

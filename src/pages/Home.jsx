@@ -64,7 +64,7 @@ const products = [
     {
         name: 'Aguacate Papelillo',
         slug: 'aguacate-papelillo',
-        img: '/productos/aguacate_papelillo.png',
+        img: '/productos/aguacate_papelillo.webp',
         tag: 'Premium',
         meta: 'Persea americana',
         desc: 'Pulpa cremosa, cáscara delgada. Selección por calibre para retail premium.',
