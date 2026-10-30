@@ -1,14 +1,8 @@
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { allies as clients } from '../../data/allies';
 import './ClientTicker.css';
 
-const clients = [
-    { name: "Mercamio", logo: "/clientes/mercamio.png" },
-    { name: "Supermercados Belalcazar", logo: "/clientes/belarcazar.png" },
-    { name: "Nutrium", logo: "/clientes/nutrium.png" },
-    { name: "Olímpica", logo: "/clientes/olimpica.png" },
-    { name: "La Gran Colombia", logo: "/clientes/la_grab_colombia.png" },
-    { name: "Postobón", logo: "/clientes/postobon.png" },
-    { name: "Pacífico Snacks", logo: "/clientes/pacifico_snacks.png" },
-];
 
 // Repeat logos enough times so a single group always exceeds viewport width
 const repeatedClients = [...clients, ...clients, ...clients];
@@ -45,6 +39,11 @@ function ClientTicker() {
                         ))}
                     </div>
                 </div>
+            </div>
+            <div className="container ticker-foot">
+                <Link to="/aliados" className="ticker-link">
+                    Conoce a nuestros aliados <ArrowRight size={16} />
+                </Link>
             </div>
         </section>
     );

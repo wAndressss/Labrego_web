@@ -1,0 +1,292 @@
+.allies-header {
+    --page-hero-img: url('/images/cosecha-despacho.webp');
+}
+
+/* ---------- Logos ---------- */
+.allies-section {
+    padding: 4rem 0 4.5rem;
+    overflow: hidden;
+}
+
+.allies-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2.25rem;
+}
+
+.allies-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(20, 24, 12, 0.12);
+    background: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text-main);
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+
+.allies-chip span {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: var(--radius-pill);
+    display: inline-grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--color-accent-soft);
+    color: var(--color-secondary);
+}
+
+.allies-chip:hover {
+    border-color: var(--color-secondary);
+}
+
+.allies-chip.active {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: #fff;
+}
+
+.allies-chip.active span {
+    background: var(--color-accent);
+    color: var(--color-bg-ink);
+}
+
+.allies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+
+.ally-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-xl);
+    background: var(--color-bg-white);
+    border: 1px solid rgba(20, 24, 12, 0.06);
+    box-shadow: 0 20px 40px -32px rgba(20, 24, 12, 0.45);
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s, border-color 0.4s;
+}
+
+.ally-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(152, 191, 34, 0.45);
+    box-shadow: 0 30px 50px -30px rgba(20, 24, 12, 0.5);
+}
+
+.ally-logo {
+    display: grid;
+    place-items: center;
+    height: 150px;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(180deg, #ffffff 0%, #faf6ec 100%);
+}
+
+.ally-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.75);
+    transition: filter 0.4s, transform 0.4s;
+}
+
+.ally-card:hover .ally-logo img {
+    filter: none;
+    transform: scale(1.05);
+}
+
+.ally-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem 1.15rem;
+    border-top: 1px dashed var(--color-border);
+}
+
+.ally-info h2 {
+    font-size: 1.05rem;
+    color: var(--color-bg-ink);
+}
+
+.ally-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--color-primary-dark);
+}
+
+.allies-count {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.allies-count strong {
+    color: var(--color-secondary);
+    font-size: 1.1rem;
+}
+
+/* ---------- Por qué nos eligen ---------- */
+.allies-why {
+    padding: 5rem 0;
+    background: var(--gradient-dark);
+    color: #fff;
+}
+
+.allies-why-head {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.allies-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.6rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent-light);
+}
+
+.allies-why-head h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: #fff;
+}
+
+.allies-why-head h2 span {
+    color: var(--color-accent-light);
+}
+
+.allies-reasons {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .allies-reasons {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.allies-reason {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.allies-reason > span {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0.9rem;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--gradient-accent);
+    color: var(--color-bg-ink);
+}
+
+.allies-reason h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+
+.allies-reason p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.allies-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-top: 3rem;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius-xl);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.allies-cta h2 {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.allies-cta p {
+    font-size: 1.15rem;
+    color: #f1c66a;
+}
+
+.allies-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.allies-cta .btn-primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg-ink);
+}
+
+.allies-cta-outline {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+.allies-cta-outline:hover {
+    background: #fff;
+    color: var(--color-bg-ink);
+}
+
+@media (max-width: 640px) {
+    .allies-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .ally-logo {
+        height: 110px;
+        padding: 1rem;
+    }
+
+    .ally-info {
+        padding: 0.8rem 0.9rem;
+    }
+
+    .ally-info h2 {
+        font-size: 0.92rem;
+    }
+
+    .allies-cta {
+        padding: 1.5rem;
+    }
+
+    .allies-cta-actions,
+    .allies-cta-actions .btn {
+        width: 100%;
+    }
+}
+
+/* En pantallas táctiles no hay "hover": mostrar los logos a color */
+@media (hover: none) {
+    .ally-logo img {
+        filter: none;
+    }
+}

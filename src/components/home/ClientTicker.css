@@ -105,3 +105,22 @@
         transform: translateX(-50%);
     }
 }
+.ticker-foot {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.75rem;
+}
+
+.ticker-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--color-secondary);
+    transition: gap 0.3s;
+}
+
+.ticker-link:hover {
+    gap: 0.7rem;
+}

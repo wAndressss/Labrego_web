@@ -55,6 +55,7 @@ function Footer() {
                         <li><Link to="/">Inicio</Link></li>
                         <li><Link to="/empresa">Empresa</Link></li>
                         <li><Link to="/productos">Productos</Link></li>
+                        <li><Link to="/aliados">Aliados</Link></li>
                         <li><Link to="/cotizar">Cotizar pedido</Link></li>
                         <li><Link to="/trabaja-con-nosotros">Carreras</Link></li>
                         <li><Link to="/contacto">Contacto</Link></li>

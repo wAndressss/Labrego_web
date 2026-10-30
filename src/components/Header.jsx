@@ -47,7 +47,7 @@ function Header() {
         return () => { document.body.style.overflow = ''; };
     }, [mobileMenuOpen]);
 
-    const empresaActive = location.pathname === '/empresa' || location.pathname.startsWith('/trabaja-con-nosotros');
+    const empresaActive = location.pathname === '/empresa' || location.pathname === '/aliados' || location.pathname.startsWith('/trabaja-con-nosotros');
     const isActive = (path) =>
         path === '/' ? location.pathname === '/' : location.pathname === path || location.pathname.startsWith(`${path}/`);
     const ariaCurrent = (path) => (isActive(path) ? 'page' : undefined);
@@ -94,6 +94,15 @@ function Header() {
                                         onClick={closeAll}
                                     >
                                         Quiénes Somos
+                                    </Link>
+                                    <Link
+                                        to="/aliados"
+                                        role="menuitem"
+                                        className={isActive('/aliados') ? 'active' : ''}
+                                        aria-current={ariaCurrent('/aliados')}
+                                        onClick={closeAll}
+                                    >
+                                        Aliados Comerciales
                                     </Link>
                                     <Link
                                         to="/trabaja-con-nosotros"
@@ -158,6 +167,7 @@ function Header() {
                         <span className="mobile-section-title">Empresa</span>
                         <div className="mobile-sublinks">
                             <Link to="/empresa" className={isActive('/empresa') ? 'active' : ''} aria-current={ariaCurrent('/empresa')} onClick={closeAll}>Quiénes Somos</Link>
+                            <Link to="/aliados" className={isActive('/aliados') ? 'active' : ''} aria-current={ariaCurrent('/aliados')} onClick={closeAll}>Aliados Comerciales</Link>
                             <Link to="/trabaja-con-nosotros" className={isActive('/trabaja-con-nosotros') ? 'active' : ''} aria-current={ariaCurrent('/trabaja-con-nosotros')} onClick={closeAll}>Trabaja con Nosotros</Link>
                         </div>
                     </div>
