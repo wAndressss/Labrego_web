@@ -108,7 +108,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                     <h1 className="page-title">
                         Productos del <span className="gradient-text">campo Labrego</span>
                     </h1>
-                    <p className="page-subtitle">Frutas, hortalizas, plátanos, banano y cárnicos con trazabilidad y calidad de exportación.</p>
+                    <p className="page-subtitle">Plátanos, banano, aguacate, limón y cárnicos con trazabilidad y calidad de exportación.</p>
                 </div>
             </section>
 

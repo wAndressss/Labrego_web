@@ -1,5 +1,5 @@
 // Catálogo central: lo usan /productos y /cotizar.
-// Cada producto tiene su propia imagen en public/productos/<archivo>.png
+// Cada producto tiene su propia imagen en public/productos/
 
 export const catalog = [
     {
@@ -49,7 +49,7 @@ export const catalog = [
         name: 'Banano Común',
         category: 'Retail y Supermercados',
         description: 'Banano Cavendish comercial, dulce y de maduración uniforme. Estándar para supermercados, plazas y exportación.',
-        image: '/productos/banano_comun.png',
+        image: '/productos/banano_comun.webp',
         altText: 'Fotografía de cluster de banano Cavendish maduro calidad exportación',
         specs: {
             nombreCientifico: 'Musa acuminata AAA',
@@ -85,75 +85,12 @@ export const catalog = [
         }
     },
     {
-        id: 5,
-        slug: 'granadilla',
-        name: 'Granadilla',
-        category: 'Frutas Frescas',
-        description: 'Pulpa gelatinosa, dulce y aromática, calidad exportación a UE y Estados Unidos. Una de las pasifloras estrella de Colombia.',
-        image: '/productos/granadilla.png',
-        altText: 'Fotografía de granadilla colombiana entera y partida mostrando pulpa gelatinosa dulce',
-        specs: {
-            nombreCientifico: 'Passiflora ligularis Juss.',
-            variedad: 'Granadilla común (ecotipos Urrao, Huila, Valle)',
-            pesoPromedio: '80g - 150g por fruto',
-            calibre: 'A (>120g, 7-8 cm Ø), B (90-120g), C (70-90g); 30-40 frutos por caja 4.5 kg',
-            empaque: 'Caja cartón 4-4.5 kg con malla individual; canastilla 8-10 kg mercado nacional',
-            vidaUtil: '8-12 días ambiente; 21-28 días refrigerado a 7-10°C y 85-90% HR',
-            gradosBrix: '13-18 °Brix',
-            acidez: '0.9% - 1.4% ácido cítrico',
-            origen: 'Huila, Cundinamarca, Boyacá, Antioquia (Urrao), Valle, Tolima, Nariño',
-            certificacion: 'Global GAP, ICA predio exportador, admisibilidad UE/USA'
-        }
-    },
-    {
-        id: 6,
-        slug: 'guayaba-manzana',
-        name: 'Guayaba Manzana',
-        category: 'Frutas Frescas',
-        description: 'Guayaba regional de Vélez (Santander), pulpa blanca-rosada firme y sabor balanceado. Excelente para consumo fresco y bocadillo.',
-        image: '/productos/guayaba_manzana.png',
-        altText: 'Fotografía de guayaba manzana variedad Vélez de pulpa blanca-rosada firme',
-        specs: {
-            nombreCientifico: 'Psidium guajava L.',
-            variedad: 'Manzana (regional Vélez-Santander)',
-            pesoPromedio: '120g - 200g por fruto',
-            calibre: 'Diámetro 6-8 cm; 25-35 frutos por canastilla de 5 kg',
-            empaque: 'Canastilla plástica 5-10 kg; caja cartón 4 kg retail',
-            vidaUtil: '4-6 días ambiente; 10-15 días refrigerado a 8-10°C y 85-90% HR',
-            gradosBrix: '8-11 °Brix',
-            vitaminaC: '150-220 mg/100 g',
-            origen: 'Santander (Vélez, Barbosa, Puente Nacional), Boyacá, Tolima, Meta, Valle',
-            certificacion: 'BPA ICA, registro predio'
-        }
-    },
-    {
-        id: 7,
-        slug: 'guayaba-pera',
-        name: 'Guayaba Pera',
-        category: 'Frutas Frescas',
-        description: 'Forma piriforme y pulpa rosada-roja, dulce y aromática. Excelente rendimiento para jugos, pulpas y postres.',
-        image: '/productos/guayaba_pera.png',
-        altText: 'Fotografía de guayaba pera piriforme con pulpa rosada-roja para jugos y pulpas',
-        specs: {
-            nombreCientifico: 'Psidium guajava L.',
-            variedad: 'Pera (piriforme, pulpa rosada)',
-            pesoPromedio: '150g - 250g por fruto',
-            calibre: 'Ø 6-9 cm, longitud 8-11 cm; 20-30 frutos por canastilla de 5 kg',
-            empaque: 'Canastilla plástica calada 5-10 kg; caja cartón 3-4 kg supermercado',
-            vidaUtil: '5-7 días ambiente; 12-18 días refrigerado a 8-10°C y 90% HR',
-            gradosBrix: '10-13 °Brix',
-            rendimientoPulpa: '75% - 85%',
-            origen: 'Santander (Hoya del Río Suárez), Boyacá, Tolima, Meta, Valle, Atlántico',
-            certificacion: 'BPA, ICA, Global GAP exportación incipiente'
-        }
-    },
-    {
         id: 8,
         slug: 'limon-tahiti',
         name: 'Limón Tahití',
         category: 'Frutas Frescas',
         description: 'Limón persa sin semilla, jugoso y aromático, calidad exportación. Producto estrella para gastronomía, retail e industria de bebidas.',
-        image: '/productos/limon_tahiti.png',
+        image: '/productos/limon_tahiti.webp',
         altText: 'Fotografía de limón Tahití persa sin semilla calidad exportación',
         specs: {
             nombreCientifico: 'Citrus latifolia Tanaka',
@@ -175,7 +112,7 @@ export const catalog = [
         name: 'Plátano Bolsa',
         category: 'Industria Procesadora',
         description: 'Plátano dominico-hartón embolsado en campo con bolsa antitrips, libre de manchas y calibre uniforme. Calidad exportación.',
-        image: '/productos/platano_bolsa.png',
+        image: '/productos/platano_bolsa.webp',
         altText: 'Fotografía de plátano dominico-hartón embolsado en campo libre de manchas, calidad exportación',
         specs: {
             nombreCientifico: 'Musa AAB Simmonds',
@@ -190,33 +127,12 @@ export const catalog = [
         }
     },
     {
-        id: 10,
-        slug: 'platano-verde',
-        name: 'Plátano Verde',
-        category: 'Industria Procesadora',
-        description: 'Plátano dominico-hartón verde, bajo contenido de humedad y alto en almidón. Ideal para snacks, frituras y agroindustria.',
-        image: '/productos/platano_verde.png',
-        altText: 'Fotografía de plátano dominico-hartón verde alto en almidón para snacks y frituras industriales',
-        specs: {
-            nombreCientifico: 'Musa AAB Simmonds',
-            variedad: 'Dominico Hartón',
-            pesoPromedio: 'Dedo 250-400 g; racimo 12-22 kg',
-            calibre: 'Longitud 22-30 cm, Ø 45-55 mm; manos de 5-7 dedos',
-            empaque: 'Bulto fibra 50-60 kg; canastilla plástica 22-25 kg; racimo entero',
-            vidaUtil: '8-14 días ambiente verde; 21-28 días refrigerado a 13-14°C y 85-90% HR',
-            almidonVerde: '70% - 75% base seca',
-            humedad: '60% - 65%',
-            origen: 'Quindío, Caldas, Risaralda, Tolima, Meta, Antioquia, Córdoba',
-            certificacion: 'BPA, ICA registro predio, Global GAP exportación'
-        }
-    },
-    {
         id: 11,
         slug: 'platano-guayabo',
         name: 'Plátano Guayabo',
         category: 'Gastronomía',
         description: 'Variedad regional de dedos curvos delgados y pulpa amarilla. Apreciado en cocina tradicional para asar y cocinar maduro.',
-        image: '/productos/platano_guayabo.png',
+        image: '/productos/platano_guayabo.webp',
         altText: 'Fotografía de plátano Guayabo regional maduro de dedos curvos para cocina tradicional',
         specs: {
             nombreCientifico: 'Musa AAB',
@@ -237,7 +153,7 @@ export const catalog = [
         name: 'Plátano Guineo',
         category: 'Gastronomía',
         description: 'Plátano bocadillo de dedo pequeño, alto contenido de azúcar y sabor intenso. Tradicional en repostería y consumo fresco.',
-        image: '/productos/platano_guineo.png',
+        image: '/productos/platano_guineo.webp',
         altText: 'Fotografía de plátano Guineo bocadillo de dedo pequeño dulce para repostería tradicional',
         specs: {
             nombreCientifico: 'Musa AAB / ABB',
@@ -250,27 +166,6 @@ export const catalog = [
             usos: 'Consumo fresco, repostería, snacks',
             origen: 'Quindío, Risaralda, Caldas, Tolima, Valle, Cundinamarca clima medio',
             certificacion: 'BPA, ICA registro predio'
-        }
-    },
-    {
-        id: 13,
-        slug: 'tomate-de-cocina',
-        name: 'Tomate de Cocina',
-        category: 'Hortalizas',
-        description: 'Tomate chonto larga vida de pulpa firme, ideal para cocción, salsas y consumo fresco. Híbridos comerciales para mercado nacional.',
-        image: '/productos/tomate_cocina.png',
-        altText: 'Fotografía de tomate chonto larga vida de pulpa firme para cocción y salsas',
-        specs: {
-            nombreCientifico: 'Solanum lycopersicum L.',
-            variedad: 'Chonto larga vida: Sofía, Santa Cruz, Río Grande, Libertador',
-            pesoPromedio: '120g - 220g por fruto',
-            calibre: 'Primera (>180g, Ø 70-85 mm), Segunda (140-180g), Tercera (90-140g)',
-            empaque: 'Canastilla plástica calada 18-22 kg (estándar Corabastos); caja cartón 10 kg retail',
-            vidaUtil: 'Pintón 10-14 días ambiente; maduro 5-7 días; refrigerado 14-21 días a 10-12°C y 85-90% HR',
-            gradosBrix: '4.5 - 6 °Brix',
-            firmeza: '3 - 5 kgf/cm²',
-            origen: 'Norte de Santander (Ocaña), Antioquia Oriente, Boyacá, Sabana de Bogotá, Valle, Nariño',
-            certificacion: 'BPA Resolución ICA 30021, Global GAP cultivos protegidos'
         }
     }
 ];

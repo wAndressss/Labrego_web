@@ -26,19 +26,19 @@ import './Home.css';
 
 const products = [
     {
-        name: 'Plátano Verde',
-        slug: 'platano-verde',
-        img: '/productos/platano_verde.png',
+        name: 'Plátano Bolsa',
+        slug: 'platano-bolsa',
+        img: '/productos/platano_bolsa.webp',
         tag: 'Industria',
         meta: 'Musa AAB · Quindío',
-        desc: 'Calibrado y empacado para agroindustria. Volumen estable durante todo el año.',
+        desc: 'Dominico-hartón embolsado en campo, libre de manchas y de calibre uniforme.',
         specs: {
-            'Variedad': 'Dominico-Hartón (Musa AAB)',
+            'Variedad': 'Dominico-Hartón embolsado (Musa AAB)',
             'Origen': 'Quindío, Colombia',
-            'Calibre': '20 – 26 cm · Grado 38 – 46 mm',
-            'Empaque': 'Caja cartón 22 kg · 18 kg',
-            'Conservación': '12 – 14 °C · HR 90 %',
-            'Vida útil': '21 – 28 días',
+            'Calibre': '25 – 32 cm · Ø 50 – 60 mm',
+            'Empaque': 'Caja cartón 22.7 kg · canastilla 20 – 22 kg',
+            'Conservación': '13 – 14 °C · HR 90 %',
+            'Vida útil': '18 – 25 días',
             'Disponibilidad': 'Todo el año',
             'Certificaciones': 'GLOBAL G.A.P. · BPA',
         },
@@ -46,7 +46,7 @@ const products = [
     {
         name: 'Banano Común',
         slug: 'banano-comun',
-        img: '/productos/banano_comun.png',
+        img: '/productos/banano_comun.webp',
         tag: 'Retail',
         meta: 'Cavendish · AAA',
         desc: 'Madurez controlada para góndola. Logística en frío sin interrupción.',
@@ -120,7 +120,7 @@ function Home() {
     useSeo({
         title: 'Labrego — Productos Agropecuarios de Colombia',
         description:
-            'Proveedor mayorista de plátano, banano, aguacate, frutas, hortalizas y cárnicos para supermercados, agroindustria y foodservice en Colombia.',
+            'Proveedor mayorista de plátano, banano, aguacate, limón y cárnicos para supermercados, agroindustria y foodservice en Colombia.',
         path: '/',
     });
 
@@ -210,7 +210,7 @@ function Home() {
                         </div>
                         <div className="lab-stat">
                             <span className="lab-stat-num">
-                                {statsVisible ? <Counter to={13} /> : '0'}
+                                {statsVisible ? <Counter to={8} /> : '0'}
                             </span>
                             <span className="lab-stat-lbl">Productos del agro</span>
                         </div>

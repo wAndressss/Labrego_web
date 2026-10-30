@@ -99,7 +99,7 @@ function buildMessage(d) {
 function Quote() {
     useSeo({
         title: 'Cotizar pedido — Labrego',
-        description: 'Solicita una cotización de frutas, plátano, banano, hortalizas y cárnicos para tu empresa. Indica productos, volumen, frecuencia y ciudad de entrega.',
+        description: 'Solicita una cotización de plátano, banano, aguacate, limón y cárnicos para tu empresa. Indica productos, volumen, frecuencia y ciudad de entrega.',
         path: '/cotizar',
     });
 

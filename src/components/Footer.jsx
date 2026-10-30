@@ -39,7 +39,7 @@ function Footer() {
                         <div className="footer-logo">LABREGO</div>
                     )}
                     <p className="footer-desc">
-                        Frutas, plátano, banano, hortalizas y cárnicos para empresas, con los más altos estándares de calidad.
+                        Plátano, banano, aguacate, limón y cárnicos para empresas, con los más altos estándares de calidad.
                     </p>
                     <div className="footer-social">
                         <a href="#" aria-label="Facebook"><Facebook size={18} /></a>
