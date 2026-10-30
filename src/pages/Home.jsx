@@ -48,7 +48,7 @@ const benefits = [
 ];
 
 const quoteSteps = [
-    { icon: Package, title: 'Elige productos', text: 'Selecciona del catálogo y define cantidades por kilo, caja o canastilla.' },
+    { icon: Package, title: 'Elige productos', text: 'Selecciona del catálogo y define cantidades en kilos o toneladas.' },
     { icon: Truck, title: 'Define la entrega', text: 'Frecuencia, ciudad y fecha de la primera entrega.' },
     { icon: MessageCircle, title: 'Recibe tu propuesta', text: 'Te respondemos por WhatsApp o correo en menos de 24 h hábiles.' },
 ];

@@ -859,3 +859,23 @@
     opacity: 0;
 }
 
+
+/* Celular pequeño: tarjetas de productos de a dos y menos relleno */
+@media (max-width: 420px) {
+    .quote-main {
+        padding: 1.1rem;
+    }
+
+    .quote-picker {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .quote-pick-name {
+        font-size: 0.8rem;
+    }
+
+    .quote-summary {
+        position: static;
+    }
+}
