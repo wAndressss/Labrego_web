@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /portal/
+Disallow: /confirmar
+Disallow: /api/
 
 Sitemap: https://labrego.com/sitemap.xml

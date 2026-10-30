@@ -76,7 +76,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    padding: 1.75rem;
+    padding: 1.6rem 1.6rem 1.5rem;
     border-radius: var(--radius-xl);
     background: var(--color-bg-white);
     border: 1px solid rgba(20, 24, 12, 0.06);
@@ -87,7 +87,7 @@
     transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s;
 }
 
-a.contact-channel:hover {
+.contact-channel:hover {
     transform: translateY(-6px);
     box-shadow: 0 34px 60px -30px rgba(20, 24, 12, 0.5);
 }
@@ -96,17 +96,17 @@ a.contact-channel:hover {
     content: '';
     position: absolute;
     z-index: -1;
-    width: 180px;
-    height: 180px;
-    right: -60px;
-    top: -60px;
+    width: 200px;
+    height: 200px;
+    right: -70px;
+    top: -70px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(155, 204, 85, 0.22), transparent 70%);
+    background: radial-gradient(circle, rgba(155, 204, 85, 0.2), transparent 70%);
     transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-a.contact-channel:hover::before {
-    transform: scale(1.6);
+.contact-channel:hover::before {
+    transform: scale(1.5);
 }
 
 .contact-channel-whatsapp {
@@ -116,13 +116,35 @@ a.contact-channel:hover::before {
 }
 
 .contact-channel-whatsapp::before {
-    background: radial-gradient(circle, rgba(62, 224, 122, 0.35), transparent 70%);
+    background: radial-gradient(circle, rgba(37, 211, 102, 0.35), transparent 70%);
+}
+
+/* Logo grande y tenue de fondo */
+.contact-channel-watermark {
+    position: absolute;
+    z-index: -1;
+    right: -30px;
+    bottom: -40px;
+    color: rgba(37, 211, 102, 0.1);
+    transform: rotate(-12deg);
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.contact-channel-whatsapp:hover .contact-channel-watermark {
+    transform: rotate(0deg) scale(1.08);
+}
+
+.contact-channel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
 }
 
 .contact-channel-icon {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 0.85rem;
+    width: 54px;
+    height: 54px;
     border-radius: 16px;
     display: grid;
     place-items: center;
@@ -131,7 +153,7 @@ a.contact-channel:hover::before {
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-a.contact-channel:hover .contact-channel-icon {
+.contact-channel:hover .contact-channel-icon {
     transform: rotate(-8deg) scale(1.08);
 }
 
@@ -139,6 +161,53 @@ a.contact-channel:hover .contact-channel-icon {
     background: #25d366;
     color: #fff;
     box-shadow: 0 12px 26px -10px rgba(37, 211, 102, 0.7);
+}
+
+.contact-channel-mail .contact-channel-icon {
+    background: #fff;
+    border: 1px solid rgba(20, 24, 12, 0.08);
+    box-shadow: 0 10px 22px -14px rgba(20, 24, 12, 0.5);
+}
+
+.contact-channel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-soft);
+    color: var(--color-secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.contact-channel-whatsapp .contact-channel-badge {
+    background: rgba(37, 211, 102, 0.16);
+    color: #7cf0a6;
+}
+
+.contact-channel-badge.open {
+    background: rgba(62, 224, 122, 0.15);
+    color: #178a45;
+}
+
+.contact-channel-badge.closed {
+    background: rgba(240, 180, 58, 0.18);
+    color: #9a6a10;
+}
+
+.contact-channel-badge.open .contact-status-dot {
+    background: #22c55e;
+}
+
+.contact-channel-badge.open .contact-status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid #22c55e;
+    animation: contact-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .contact-channel-label {
@@ -155,23 +224,31 @@ a.contact-channel:hover .contact-channel-icon {
 
 .contact-channel strong {
     font-family: var(--font-display);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     letter-spacing: -0.01em;
-    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.contact-channel-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1rem;
 }
 
 .contact-channel-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    margin-top: 0.9rem;
-    font-size: 0.88rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: var(--color-secondary);
     transition: gap 0.3s;
 }
 
-a.contact-channel:hover .contact-channel-cta {
+.contact-channel-cta:hover {
     gap: 0.6rem;
 }
 
@@ -179,27 +256,110 @@ a.contact-channel:hover .contact-channel-cta {
     color: #7cf0a6;
 }
 
-.contact-hours {
+.contact-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(20, 24, 12, 0.12);
+    background: transparent;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.contact-copy:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.contact-copy.copied {
+    background: var(--color-accent-soft);
+    border-color: transparent;
+    color: var(--color-secondary);
+}
+
+.contact-channel-whatsapp .contact-copy {
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.contact-channel-whatsapp .contact-copy:hover,
+.contact-channel-whatsapp .contact-copy.copied {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+/* Horario: días de la semana y jornadas */
+.contact-week {
+    display: flex;
+    gap: 0.3rem;
+    margin: 0.35rem 0 0.65rem;
+}
+
+.contact-week span {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(20, 24, 12, 0.3);
+    background: rgba(20, 24, 12, 0.04);
+}
+
+.contact-week span.on {
+    background: var(--color-accent-soft);
+    color: var(--color-secondary);
+}
+
+.contact-week span.today {
+    box-shadow: 0 0 0 2px var(--color-secondary);
+}
+
+.contact-week span.today.on {
+    background: var(--color-secondary);
+    color: #fff;
+}
+
+.contact-shifts {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    margin-top: 0.6rem;
 }
 
-.contact-hours span {
+.contact-shifts span {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
     font-size: 0.92rem;
+    font-weight: 500;
     color: var(--color-text-main);
+    transition: background 0.3s;
 }
 
-.contact-hours span::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-accent);
+.contact-shifts svg {
+    color: #e8a93a;
+}
+
+.contact-shifts span.now {
+    background: rgba(62, 224, 122, 0.12);
+    color: #178a45;
+    font-weight: 700;
+}
+
+.contact-office-text {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
 }
 
 /* ==============================

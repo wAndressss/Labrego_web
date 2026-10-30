@@ -1,20 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { X, Download, Sprout, ShieldCheck, Award, Truck, MapPin, Package, Clock } from 'lucide-react';
+import { X, Download, Sprout, ShieldCheck, Award, Truck, Package, Ruler, Clock } from 'lucide-react';
 import { useSeo } from '../hooks/useSeo';
 import { useReveal } from '../hooks/useReveal';
-import Breadcrumbs from '../components/Breadcrumbs';
 import ProductImage from '../components/ProductImage';
 import ProductShowcase from '../components/ProductShowcase';
 import { catalog } from '../data/products';
 import './Products.css';
 
-// Datos clave que se muestran destacados en la ficha
-const highlights = [
-    { key: 'origen', label: 'Origen', icon: MapPin },
-    { key: 'empaque', label: 'Empaque', icon: Package },
-    { key: 'vidaUtil', label: 'Vida útil', icon: Clock },
-];
+// Íconos para los tres datos clave de la ficha: presentación, tamaño y duración
+const FACT_ICONS = [Package, Ruler, Clock];
 
 const trustPoints = [
     { icon: ShieldCheck, title: 'Trazabilidad por lote', text: 'Cada despacho identifica finca, fecha de cosecha y lote.' },
@@ -173,42 +168,23 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                                 />
                             </div>
                             <div className="modal-info-col">
-                                <Breadcrumbs
-                                    className="dark"
-                                    items={[
-                                        { label: 'Productos', to: '/productos' },
-                                        { label: selectedProduct.category, to: '/productos' },
-                                        { label: selectedProduct.name },
-                                    ]}
-                                />
                                 <span className="modal-badge">{selectedProduct.category}</span>
                                 <h2 id="modal-title">{selectedProduct.name}</h2>
+                                <p className="modal-tagline script-text">{selectedProduct.tagline}</p>
                                 <p className="modal-desc">{selectedProduct.description}</p>
 
                                 <div className="modal-highlights">
-                                    {highlights.filter(h => selectedProduct.specs[h.key]).map(h => {
-                                        const Icon = h.icon;
+                                    {selectedProduct.facts.map(([label, value], i) => {
+                                        const Icon = FACT_ICONS[i];
                                         return (
-                                            <div key={h.key} className="modal-highlight">
+                                            <div key={label} className="modal-highlight">
                                                 <Icon size={18} strokeWidth={1.7} />
-                                                <span>{h.label}</span>
-                                                <strong>{selectedProduct.specs[h.key]}</strong>
+                                                <span>{label}</span>
+                                                <strong>{value}</strong>
                                             </div>
                                         );
                                     })}
                                 </div>
-
-                                <h4 className="specs-title">Especificaciones técnicas</h4>
-                                <dl className="specs-list">
-                                    {Object.entries(selectedProduct.specs)
-                                        .filter(([key]) => !highlights.some(h => h.key === key))
-                                        .map(([key, value]) => (
-                                            <div key={key}>
-                                                <dt>{formatLabel(key)}</dt>
-                                                <dd>{value}</dd>
-                                            </div>
-                                        ))}
-                                </dl>
 
                                 <div className="modal-actions">
                                     <button
@@ -216,7 +192,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
                                         className="btn btn-primary"
                                         onClick={() => handleDatasheet(selectedProduct)}
                                     >
-                                        <Download size={18} /> Descargar ficha técnica
+                                        <Download size={18} /> Ficha técnica completa
                                     </button>
                                     <button type="button" className="btn btn-outline" onClick={closeModal}>
                                         Cerrar

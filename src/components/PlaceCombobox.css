@@ -1,0 +1,67 @@
+.place-combo {
+    position: relative;
+}
+
+.place-combo-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-primary-dark);
+    pointer-events: none;
+}
+
+.place-combo input.place-combo-input {
+    padding-left: 2.6rem;
+}
+
+.place-combo-list {
+    position: absolute;
+    z-index: 30;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.35rem);
+    max-height: 260px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0.35rem;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 20px 40px -18px rgba(20, 24, 12, 0.35);
+    animation: place-combo-in 0.18s ease-out;
+}
+
+@keyframes place-combo-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+}
+
+.place-combo-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: var(--color-text-main);
+}
+
+.place-combo-list li small {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.place-combo-list li.active {
+    background: var(--color-accent-soft);
+    color: var(--color-secondary);
+}
+
+.place-combo-list .place-combo-empty {
+    cursor: default;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}

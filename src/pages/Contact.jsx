@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Send, CheckCircle, MessageCircle, Clock, ArrowUpRight, Sprout, ClipboardList } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle, MessageCircle, Clock, ArrowUpRight, Sprout, ClipboardList, Copy, Check, Sun, Sunset } from 'lucide-react';
+import { GmailIcon, WhatsAppIcon } from '../components/icons/BrandIcons';
 import { useSeo } from '../hooks/useSeo';
 import { useReveal } from '../hooks/useReveal';
 import {
@@ -22,8 +23,18 @@ const SUBJECTS = [
     'Otro',
 ];
 
-// ¿Estamos dentro del horario de atención? (hora de Colombia)
-function isOfficeOpen(date = new Date()) {
+const WEEK = ['D', 'L', 'M', 'M', 'J', 'V', 'S']; // 0 = domingo
+const WEEK_NAMES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+const formatHour = (minutes) => {
+    const h = Math.floor(minutes / 60);
+    const m = String(minutes % 60).padStart(2, '0');
+    if (h === 12 && m === '00') return '12:00 m.';
+    return `${h > 12 ? h - 12 : h}:${m} ${h < 12 ? 'a.m.' : 'p.m.'}`;
+};
+
+// Día y minuto actuales en hora de Colombia
+function bogotaNow(date = new Date()) {
     const parts = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Bogota',
         weekday: 'short',
@@ -32,18 +43,56 @@ function isOfficeOpen(date = new Date()) {
         hourCycle: 'h23',
     }).formatToParts(date);
     const get = (type) => parts.find(p => p.type === type)?.value;
-    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
-    const minutes = Number(get('hour')) * 60 + Number(get('minute'));
-    return OFFICE_DAYS.includes(day) && OFFICE_SHIFTS.some(s => minutes >= s.from && minutes < s.to);
+    return {
+        day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday')),
+        minutes: Number(get('hour')) * 60 + Number(get('minute')),
+    };
 }
 
-function useOfficeOpen() {
-    const [open, setOpen] = useState(() => isOfficeOpen());
+// Estado del horario: jornada en curso o cuándo volvemos a abrir
+function officeStatus(now = bogotaNow()) {
+    const workday = OFFICE_DAYS.includes(now.day);
+    const current = workday ? OFFICE_SHIFTS.findIndex(s => now.minutes >= s.from && now.minutes < s.to) : -1;
+    if (current >= 0) {
+        return { open: true, current, day: now.day, text: `Abierto · hasta las ${formatHour(OFFICE_SHIFTS[current].to)}` };
+    }
+    const laterToday = workday && OFFICE_SHIFTS.find(s => now.minutes < s.from);
+    if (laterToday) {
+        return { open: false, current: -1, day: now.day, text: `Cerrado · abrimos hoy a las ${formatHour(laterToday.from)}` };
+    }
+    let next = (now.day + 1) % 7;
+    while (!OFFICE_DAYS.includes(next)) next = (next + 1) % 7;
+    const when = next === (now.day + 1) % 7 ? 'mañana' : `el ${WEEK_NAMES[next]}`;
+    return { open: false, current: -1, day: now.day, text: `Cerrado · abrimos ${when} a las ${formatHour(OFFICE_SHIFTS[0].from)}` };
+}
+
+function useOfficeStatus() {
+    const [status, setStatus] = useState(() => officeStatus());
     useEffect(() => {
-        const id = setInterval(() => setOpen(isOfficeOpen()), 60_000);
+        const id = setInterval(() => setStatus(officeStatus()), 60_000);
         return () => clearInterval(id);
     }, []);
-    return open;
+    return status;
+}
+
+// Botón que copia un texto y confirma por un momento
+function CopyButton({ value, label }) {
+    const [copied, setCopied] = useState(false);
+    const copy = async () => {
+        try {
+            await navigator.clipboard.writeText(value);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1800);
+        } catch {
+            /* sin permiso de portapapeles: no hacemos nada */
+        }
+    };
+    return (
+        <button type="button" className={`contact-copy ${copied ? 'copied' : ''}`} onClick={copy} aria-label={`Copiar ${label}`}>
+            {copied ? <Check size={15} /> : <Copy size={15} />}
+            {copied ? 'Copiado' : 'Copiar'}
+        </button>
+    );
 }
 
 const emptyForm = { name: '', email: '', phone: '', subject: '', message: '' };
@@ -55,7 +104,8 @@ function Contact() {
         path: '/contacto',
     });
 
-    const officeOpen = useOfficeOpen();
+    const office = useOfficeStatus();
+    const officeOpen = office.open;
     const [channelsRef, channelsVisible] = useReveal(0.15);
     const [data, setData] = useState(emptyForm);
     const [errors, setErrors] = useState({});
@@ -123,31 +173,66 @@ function Contact() {
             <section className="contact-channels-section">
                 <div className="container">
                     <div className={`contact-channels reveal-stagger ${channelsVisible ? 'visible' : ''}`} ref={channelsRef}>
-                        <a
-                            className="contact-channel contact-channel-whatsapp"
-                            href={`https://wa.me/${WHATSAPP_PHONE}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <span className="contact-channel-icon"><MessageCircle size={24} /></span>
+                        <div className="contact-channel contact-channel-whatsapp">
+                            <span className="contact-channel-watermark" aria-hidden="true"><WhatsAppIcon size={150} /></span>
+                            <div className="contact-channel-top">
+                                <span className="contact-channel-icon"><WhatsAppIcon size={28} /></span>
+                                <span className="contact-channel-badge">Respuesta rápida</span>
+                            </div>
                             <span className="contact-channel-label">WhatsApp</span>
                             <strong>{WHATSAPP_DISPLAY}</strong>
-                            <span className="contact-channel-cta">Escríbenos ahora <ArrowUpRight size={16} /></span>
-                        </a>
-                        <a className="contact-channel" href={`mailto:${EMAIL}`}>
-                            <span className="contact-channel-icon"><Mail size={24} /></span>
+                            <div className="contact-channel-actions">
+                                <a className="contact-channel-cta" href={`https://wa.me/${WHATSAPP_PHONE}`} target="_blank" rel="noopener noreferrer">
+                                    Escribir ahora <ArrowUpRight size={16} />
+                                </a>
+                                <CopyButton value={WHATSAPP_DISPLAY} label="número de WhatsApp" />
+                            </div>
+                        </div>
+
+                        <div className="contact-channel contact-channel-mail">
+                            <div className="contact-channel-top">
+                                <span className="contact-channel-icon"><GmailIcon size={30} /></span>
+                                <span className="contact-channel-badge">Cotizaciones y facturas</span>
+                            </div>
                             <span className="contact-channel-label">Correo</span>
                             <strong>{EMAIL}</strong>
-                            <span className="contact-channel-cta">Enviar correo <ArrowUpRight size={16} /></span>
-                        </a>
-                        <div className="contact-channel contact-channel-static">
-                            <span className="contact-channel-icon"><Clock size={24} /></span>
+                            <div className="contact-channel-actions">
+                                <a className="contact-channel-cta" href={`mailto:${EMAIL}`}>
+                                    Enviar correo <ArrowUpRight size={16} />
+                                </a>
+                                <CopyButton value={EMAIL} label="correo" />
+                            </div>
+                        </div>
+
+                        <div className="contact-channel contact-channel-hours">
+                            <div className="contact-channel-top">
+                                <span className="contact-channel-icon"><Clock size={26} /></span>
+                                <span className={`contact-channel-badge ${office.open ? 'open' : 'closed'}`}>
+                                    <span className="contact-status-dot" aria-hidden="true" />
+                                    {office.open ? 'Abierto' : 'Cerrado'}
+                                </span>
+                            </div>
                             <span className="contact-channel-label">Horario de atención</span>
-                            <strong>Lunes a viernes</strong>
-                            <span className="contact-hours">
-                                <span>8:00 a.m. – 12:00 m.</span>
-                                <span>2:00 p.m. – 5:00 p.m.</span>
-                            </span>
+                            <div className="contact-week" aria-label="Días de atención: lunes a viernes">
+                                {WEEK.map((d, i) => (
+                                    <span
+                                        key={i}
+                                        className={`${OFFICE_DAYS.includes(i) ? 'on' : ''} ${i === office.day ? 'today' : ''}`}
+                                        title={WEEK_NAMES[i]}
+                                    >
+                                        {d}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="contact-shifts">
+                                {OFFICE_SHIFTS.map((shift, i) => (
+                                    <span key={i} className={office.current === i ? 'now' : ''}>
+                                        {i === 0 ? <Sun size={15} /> : <Sunset size={15} />}
+                                        {formatHour(shift.from)} – {formatHour(shift.to)}
+                                    </span>
+                                ))}
+                            </div>
+                            <span className="contact-office-text">{office.text}</span>
                         </div>
                     </div>
                 </div>

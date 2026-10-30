@@ -10,6 +10,7 @@ const CareerDetail = lazy(() => import('./pages/CareerDetail'));
 const Products = lazy(() => import('./pages/Products'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Quote = lazy(() => import('./pages/Quote'));
+const Confirm = lazy(() => import('./pages/Confirm'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Cookies = lazy(() => import('./pages/Cookies'));
@@ -28,6 +29,7 @@ function App() {
             <Route path="productos" element={<Products />} />
             <Route path="contacto" element={<Contact />} />
             <Route path="cotizar" element={<Quote />} />
+            <Route path="confirmar" element={<Confirm />} />
             <Route path="privacidad" element={<Privacy />} />
             <Route path="terminos" element={<Terms />} />
             <Route path="cookies" element={<Cookies />} />

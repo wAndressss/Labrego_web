@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/*.js": {
+      "includeFiles": "public/logo-dark.png"
+    }
+  },
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
+}

@@ -849,3 +849,104 @@
         animation: none;
     }
 }
+
+/* ---------- Precios ---------- */
+.quote-item-price {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-primary-dark);
+}
+
+.quote-summary-list span small {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.quote-summary-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quote-summary-total span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.quote-summary-total strong {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-accent-light);
+    animation: quote-item-in 0.35s both;
+}
+
+.quote-done-total {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--gradient-dark);
+    color: #fff;
+}
+
+.quote-done-total span {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.quote-done-total strong {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-accent-light);
+}
+
+.quote-done-total small {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Campo trampa para robots: invisible para las personas */
+.quote-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.quote-send-error {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md);
+    background: rgba(217, 74, 61, 0.08);
+    border: 1px solid rgba(217, 74, 61, 0.25);
+    color: var(--color-bg-ink);
+    font-size: 0.9rem;
+}
+
+.quote-send-error span {
+    color: var(--color-text-muted);
+}
+
+.quote-send-error div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.quote-send-error .btn {
+    padding: 0.6rem 1rem;
+}

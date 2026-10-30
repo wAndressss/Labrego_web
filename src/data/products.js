@@ -9,6 +9,13 @@ export const catalog = [
         tagline: 'Cremoso y de sabor tradicional',
         category: 'Frutas Frescas',
         description: 'Aguacate criollo antillano de pulpa cremosa y sabor tradicional. Ideal para consumo fresco y mercados mayoristas en plaza.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 7500,
+        facts: [
+            ['Presentación', 'Canastilla de 4–5 kg o bulto de 25 kg'],
+            ['Tamaño', '200–350 g por unidad'],
+            ['Duración', '15–20 días refrigerado'],
+        ],
         image: '/productos/aguacate_comun.webp',
         altText: 'Fotografía de aguacate común criollo antillano de pulpa cremosa, calidad mercado nacional',
         specs: {
@@ -31,6 +38,13 @@ export const catalog = [
         tagline: 'Cáscara delgada, pulpa amarilla',
         category: 'Frutas Frescas',
         description: 'Variedad de cáscara delgada y pulpa amarilla cremosa, raza guatemalteca-antillana. Alta demanda en mercados nacionales y supermercados.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 9000,
+        facts: [
+            ['Presentación', 'Canastilla de 5 kg o caja de 4 kg'],
+            ['Tamaño', '350–700 g por unidad'],
+            ['Duración', '18–25 días refrigerado'],
+        ],
         image: '/productos/aguacate_papelillo.webp',
         altText: 'Fotografía de aguacate Papelillo de cáscara delgada y pulpa amarilla cremosa, calidad supermercado',
         specs: {
@@ -52,6 +66,13 @@ export const catalog = [
         tagline: 'Dulce y de maduración uniforme',
         category: 'Retail y Supermercados',
         description: 'Banano Cavendish comercial, dulce y de maduración uniforme. Estándar para supermercados, plazas y exportación.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 2000,
+        facts: [
+            ['Presentación', 'Caja de 18,14 kg'],
+            ['Tamaño', '120–180 g por dedo'],
+            ['Duración', '21–28 días en verde'],
+        ],
         image: '/productos/banano_comun.webp',
         altText: 'Fotografía de cluster de banano Cavendish maduro calidad exportación',
         specs: {
@@ -73,6 +94,13 @@ export const catalog = [
         tagline: 'Canal fresca bajo normativa sanitaria',
         category: 'Cárnicos',
         description: 'Canal porcina fresca de cruces comerciales, faenada bajo normativa INVIMA. Trazabilidad completa desde granja certificada PorkColombia.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 11500,
+        facts: [
+            ['Presentación', 'Canal entera o media canal'],
+            ['Tamaño', 'Canal de 75–92 kg'],
+            ['Duración', '7–10 días refrigerado'],
+        ],
         image: '/productos/cerdos_canal.webp',
         altText: 'Fotografía referencial de canal porcina fresca cruces comerciales bajo norma INVIMA',
         specs: {
@@ -95,6 +123,13 @@ export const catalog = [
         tagline: 'Jugoso y sin semilla',
         category: 'Frutas Frescas',
         description: 'Limón persa sin semilla, jugoso y aromático, calidad exportación. Producto estrella para gastronomía, retail e industria de bebidas.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: null,
+        facts: [
+            ['Presentación', 'Caja de 4,5 kg o bulto de 25–40 kg'],
+            ['Tamaño', '80–130 g por fruto'],
+            ['Duración', '30–45 días refrigerado'],
+        ],
         image: '/productos/limon_tahiti.webp',
         altText: 'Fotografía de limón Tahití persa sin semilla calidad exportación',
         specs: {
@@ -118,6 +153,13 @@ export const catalog = [
         tagline: 'Libre de manchas, calidad exportación',
         category: 'Industria Procesadora',
         description: 'Plátano dominico-hartón embolsado en campo con bolsa antitrips, libre de manchas y calibre uniforme. Calidad exportación.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 2400,
+        facts: [
+            ['Presentación', 'Canastilla de 20–22 kg o caja de 22,7 kg'],
+            ['Tamaño', '280–450 g por dedo'],
+            ['Duración', '18–25 días en verde'],
+        ],
         image: '/productos/platano_bolsa.webp',
         altText: 'Fotografía de plátano dominico-hartón embolsado en campo libre de manchas, calidad exportación',
         specs: {
@@ -139,6 +181,13 @@ export const catalog = [
         tagline: 'Dedos curvos y pulpa amarilla',
         category: 'Gastronomía',
         description: 'Variedad regional de dedos curvos delgados y pulpa amarilla. Apreciado en cocina tradicional para asar y cocinar maduro.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 2800,
+        facts: [
+            ['Presentación', 'Canastilla de 20–25 kg'],
+            ['Tamaño', '150–220 g por dedo'],
+            ['Duración', '15–20 días refrigerado'],
+        ],
         image: '/productos/platano_guayabo.webp',
         altText: 'Fotografía de plátano Guayabo regional maduro de dedos curvos para cocina tradicional',
         specs: {
@@ -161,6 +210,13 @@ export const catalog = [
         tagline: 'Pequeño, dulce y aromático',
         category: 'Gastronomía',
         description: 'Plátano bocadillo de dedo pequeño, alto contenido de azúcar y sabor intenso. Tradicional en repostería y consumo fresco.',
+        // Precio estándar en COP por kilo (null = a convenir)
+        price: 2400,
+        facts: [
+            ['Presentación', 'Canastilla de 18–20 kg'],
+            ['Tamaño', '50–90 g por dedo'],
+            ['Duración', '12–18 días refrigerado'],
+        ],
         image: '/productos/platano_guineo.webp',
         altText: 'Fotografía de plátano Guineo bocadillo de dedo pequeño dulce para repostería tradicional',
         specs: {
@@ -181,3 +237,12 @@ export const catalog = [
 export const categories = [...new Set(catalog.map(p => p.category))];
 
 export const findProduct = (slug) => catalog.find(p => p.slug === slug);
+
+// Unidades en las que se puede cotizar (los precios son por kilo)
+export const UNIT_TO_KG = { kg: 1, toneladas: 1000 };
+
+export const formatQuantity = (value) =>
+    new Intl.NumberFormat('es-CO', { maximumFractionDigits: 3 }).format(value);
+
+export const formatCOP = (value) =>
+    new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
