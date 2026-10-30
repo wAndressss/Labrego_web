@@ -35,8 +35,8 @@ function Privacy() {
                             <strong>Labrego S.A.S.</strong>, identificada con NIT 901.XXX.XXX-X, con domicilio en el municipio de Trujillo, Valle del Cauca, Colombia, es la responsable del tratamiento de los datos personales recolectados a través de este sitio web y sus canales asociados.
                         </p>
                         <p>
-                            <strong>Correo de contacto:</strong> <a href="mailto:proteccion.datos@labrego.com">proteccion.datos@labrego.com</a><br />
-                            <strong>Teléfono:</strong> +57 (602) 260 1234
+                            <strong>Correo de contacto:</strong> <a href="mailto:labregooficial@gmail.com">labregooficial@gmail.com</a><br />
+                            <strong>Teléfono:</strong> +57 323 907 1499
                         </p>
 
                         <h2>2. Definiciones</h2>
@@ -71,7 +71,7 @@ function Privacy() {
 
                         <h2>5. Procedimiento para Ejercer los Derechos</h2>
                         <p>
-                            Las consultas, reclamos o solicitudes de supresión deben dirigirse al correo <a href="mailto:proteccion.datos@labrego.com">proteccion.datos@labrego.com</a>, indicando nombre completo, número de identificación, dirección de notificación, descripción de la solicitud y los documentos que se quieran hacer valer.
+                            Las consultas, reclamos o solicitudes de supresión deben dirigirse al correo <a href="mailto:labregooficial@gmail.com">labregooficial@gmail.com</a>, indicando nombre completo, número de identificación, dirección de notificación, descripción de la solicitud y los documentos que se quieran hacer valer.
                         </p>
                         <p>Términos de respuesta:</p>
                         <ul>

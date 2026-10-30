@@ -18,7 +18,7 @@ import {
 import { useSeo } from '../hooks/useSeo';
 import ProductImage from '../components/ProductImage';
 import { catalog, findProduct } from '../data/products';
-import { WHATSAPP_PHONE } from '../data/contact';
+import { EMAIL, WHATSAPP_PHONE } from '../data/contact';
 import './Quote.css';
 
 const DRAFT_KEY = 'labrego-quote-draft';
@@ -192,7 +192,7 @@ function Quote() {
 
     const message = buildMessage(draft);
     const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-    const mailHref = `mailto:comercial@labrego.com?subject=${encodeURIComponent(`Cotización — ${draft.company || draft.name}`)}&body=${encodeURIComponent(message.replace(/\*/g, ''))}`;
+    const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(`Cotización — ${draft.company || draft.name}`)}&body=${encodeURIComponent(message.replace(/\*/g, ''))}`;
 
     const submit = (ev) => {
         ev.preventDefault();

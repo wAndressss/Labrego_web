@@ -84,7 +84,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid #eee;font-size:.8re
 <div class="actions"><button onclick="window.print()">Imprimir / Guardar PDF</button></div>
 <h2 style="font-size:1.1rem;color:#4a6b14;">Especificaciones técnicas</h2>
 <table>${rows}</table>
-<footer>Documento generado automáticamente — Labrego S.A.S. · contacto@labrego.com</footer>
+<footer>Documento generado automáticamente — Labrego S.A.S. · labregooficial@gmail.com</footer>
 </body></html>`;
         const blob = new Blob([html], { type: 'text/html' });
         const url = URL.createObjectURL(blob);

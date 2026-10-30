@@ -90,7 +90,7 @@ function Cookies() {
 
                         <h2>7. Más información</h2>
                         <p>
-                            Para consultas relacionadas con esta política, escriba a <a href="mailto:proteccion.datos@labrego.com">proteccion.datos@labrego.com</a> o consulte nuestra <a href="/privacidad">Política de Tratamiento de Datos Personales</a>.
+                            Para consultas relacionadas con esta política, escriba a <a href="mailto:labregooficial@gmail.com">labregooficial@gmail.com</a> o consulte nuestra <a href="/privacidad">Política de Tratamiento de Datos Personales</a>.
                         </p>
                     </article>
                 </div>

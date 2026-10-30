@@ -82,22 +82,15 @@ function Contact() {
                             <li>
                                 <span className="contact-icon"><Phone size={18} /></span>
                                 <div>
-                                    <strong>Teléfono principal</strong>
-                                    <a href="tel:+5760226001234">+57 (602) 260 1234</a>
+                                    <strong>Teléfono / WhatsApp</strong>
+                                    <a href="https://wa.me/573239071499" target="_blank" rel="noopener noreferrer">+57 323 907 1499</a>
                                 </div>
                             </li>
                             <li>
                                 <span className="contact-icon"><Mail size={18} /></span>
                                 <div>
-                                    <strong>Servicio al cliente</strong>
-                                    <a href="mailto:servicioalcliente@labrego.com">servicioalcliente@labrego.com</a>
-                                </div>
-                            </li>
-                            <li>
-                                <span className="contact-icon"><Mail size={18} /></span>
-                                <div>
-                                    <strong>Comercial / Cotizaciones</strong>
-                                    <a href="mailto:comercial@labrego.com">comercial@labrego.com</a>
+                                    <strong>Correo · servicio al cliente y cotizaciones</strong>
+                                    <a href="mailto:labregooficial@gmail.com">labregooficial@gmail.com</a>
                                 </div>
                             </li>
                             <li>
