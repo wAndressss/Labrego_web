@@ -1,3 +1,20 @@
+# Labrego — página web
+
+## Ver la página en tu computador (Windows)
+
+Haz **doble clic en `iniciar-web.bat`** (en la carpeta del proyecto). El archivo:
+
+1. Baja los últimos cambios de GitHub.
+2. Instala lo necesario.
+3. Abre la página en el navegador (http://localhost:5173).
+
+Deja abierta la ventana negra mientras usas la página. Cada vez que quieras ver
+cambios nuevos, cierra esa ventana y vuelve a hacer doble clic en `iniciar-web.bat`.
+
+Requisitos (una sola vez): [Node.js LTS](https://nodejs.org) y [Git](https://git-scm.com).
+
+---
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
