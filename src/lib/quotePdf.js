@@ -199,8 +199,8 @@ export function buildQuotePdf(kind, data, logo) {
     const closing = kind === 'order'
         ? 'El cliente confirmó esta cotización desde el enlace enviado a su correo. Coordinar disponibilidad, '
             + 'despacho y facturación con el cliente.'
-        : 'Para aceptar esta cotización usa el botón "Confirmar pedido" del correo que la acompaña. '
-            + 'Al confirmarla, nuestro equipo recibe la orden de venta y te contactará para coordinar la entrega.';
+        : `Para hacer el pedido, escríbenos por WhatsApp al ${WHATSAPP_DISPLAY} o a ${EMAIL} indicando la `
+            + 'referencia de esta cotización. Nuestro equipo te contactará para coordinar la entrega.';
     doc.text(doc.splitTextToSize(closing, contentW), MARGIN, y);
 
     // ---------- Pie de página en todas las hojas ----------

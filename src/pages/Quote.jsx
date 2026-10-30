@@ -20,7 +20,7 @@ import {
 import { useSeo } from '../hooks/useSeo';
 import ProductImage from '../components/ProductImage';
 import PlaceCombobox from '../components/PlaceCombobox';
-import { catalog, findProduct, formatCOP } from '../data/products';
+import { catalog, findProduct } from '../data/products';
 import { CLIENT_TYPES, DEFAULT_FREQUENCY, FREQUENCIES, UNITS } from '../data/quoteOptions';
 import { WHATSAPP_PHONE } from '../data/contact';
 import { priceItems, QUOTE_VALID_DAYS } from '../lib/pricing';
@@ -81,7 +81,14 @@ const toPayload = (d) => ({
     website: d.website,
 });
 
-// Datos para armar el PDF en el navegador (respaldo si falla el envío)
+// Referencia corta y legible con la fecha de Colombia: LAB-20261030-4F7K
+function createReference(date = new Date()) {
+    const ymd = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota' }).format(date).replace(/-/g, '');
+    const suffix = Math.random().toString(36).slice(2, 6).toUpperCase().padEnd(4, '0');
+    return `LAB-${ymd}-${suffix}`;
+}
+
+// Datos para armar el PDF de la cotización (con precios) en el navegador
 const toPdfData = (d, reference, issuedAt) => ({
     reference,
     issuedAt,
@@ -91,11 +98,11 @@ const toPdfData = (d, reference, issuedAt) => ({
     pricing: priceItems(d.items),
 });
 
-// Mensaje de WhatsApp de respaldo si el correo no se puede enviar
-function buildMessage(d) {
+// Mensaje de WhatsApp para hacer el pedido a partir de la cotización
+function buildMessage(d, reference) {
     const pricing = priceItems(d.items);
     return [
-        '*Solicitud de cotización — Labrego*',
+        `*Quiero hacer el pedido de la cotización ${reference}*`,
         '',
         ...pricing.lines.map(l => `• ${l.name}: ${l.quantity} ${l.unit} — ${l.frequency}`),
         '',
@@ -123,13 +130,10 @@ function Quote() {
     const [step, setStep] = useState(0);
     const [errors, setErrors] = useState({});
     const [search, setSearch] = useState('');
-    const [status, setStatus] = useState('idle'); // idle | sending | sent | error
-    const [result, setResult] = useState(null); // respuesta del servidor
-    const [sendError, setSendError] = useState('');
+    // Cotización generada: { reference, issuedAt }
+    const [result, setResult] = useState(null);
     const [pdfStatus, setPdfStatus] = useState('idle'); // idle | generating | ready | error
-    const sent = status === 'sent';
-
-    const pricing = useMemo(() => priceItems(draft.items), [draft.items]);
+    const sent = result !== null;
 
     useEffect(() => {
         try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch { /* sin almacenamiento */ }
@@ -218,35 +222,21 @@ function Quote() {
         }
     };
 
-    const submit = async (ev) => {
+    // Por ahora la cotización se entrega como PDF descargado (con precios).
+    // El envío por correo (api/quote.js) queda listo para activarlo después.
+    const submit = (ev) => {
         ev.preventDefault();
-        if (status === 'sending') return;
         const e = validate(2);
         setErrors(e);
         if (Object.keys(e).length) return;
-
-        setStatus('sending');
-        setSendError('');
-        try {
-            const response = await fetch('/api/quote', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(toPayload(draft)),
-            });
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(data.error || 'No pudimos enviar la cotización.');
-            setResult({ ...data, issuedAt: new Date().toISOString() });
-            setStatus('sent');
-        } catch (err) {
-            setSendError(err.message === 'Failed to fetch' ? 'No hay conexión con el servidor.' : err.message);
-            setStatus('error');
-        }
+        const quote = { reference: createReference(), issuedAt: new Date().toISOString() };
+        setResult(quote);
+        downloadPdf(quote.reference, quote.issuedAt);
     };
 
     const startOver = () => {
         setDraft(emptyDraft);
         setStep(0);
-        setStatus('idle');
         setResult(null);
         setPdfStatus('idle');
     };
@@ -272,23 +262,17 @@ function Quote() {
                     {sent ? (
                         <div className="quote-done">
                             <span className="quote-done-icon"><CheckCircle size={56} strokeWidth={1.6} /></span>
-                            <h2>¡Te enviamos la cotización!</h2>
+                            <h2>¡Tu cotización está lista!</h2>
                             <p className="quote-done-ref">Referencia <strong>{result.reference}</strong></p>
                             <p>
-                                Revisa tu correo <strong>{result.email}</strong>: ahí está el PDF con los precios y el botón
-                                <strong> Confirmar pedido</strong>. Si no lo ves en unos minutos, busca en la carpeta de spam.
+                                Descargamos el PDF con los <strong>precios y el valor total</strong> de tu pedido.
+                                Si estás de acuerdo, haz el pedido por WhatsApp con tu número de referencia.
                             </p>
-                            <div className="quote-done-total">
-                                <span>Total por entrega</span>
-                                <strong>{formatCOP(result.total)}</strong>
-                                <small>Válida hasta el {new Date(result.validUntil).toLocaleDateString('es-CO', { dateStyle: 'long' })}</small>
-                            </div>
                             <div className={`quote-pdf-card ${pdfStatus}`}>
                                 <span className="quote-pdf-icon"><FileText size={26} strokeWidth={1.6} /></span>
                                 <div>
                                     <strong>Cotizacion-{result.reference}.pdf</strong>
                                     <span>
-                                        {pdfStatus === 'idle' && 'También puedes descargarla aquí'}
                                         {pdfStatus === 'generating' && 'Generando PDF...'}
                                         {pdfStatus === 'ready' && 'PDF descargado en tu equipo'}
                                         {pdfStatus === 'error' && 'No se pudo generar el PDF. Intenta de nuevo.'}
@@ -305,6 +289,16 @@ function Quote() {
                                         : <Download size={18} />}
                                     Descargar PDF
                                 </button>
+                            </div>
+                            <div className="quote-done-actions">
+                                <a
+                                    className="btn btn-primary quote-submit"
+                                    href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(buildMessage(draft, result.reference))}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Hacer el pedido por WhatsApp <ArrowRight size={18} />
+                                </a>
                             </div>
                             <button type="button" className="quote-link-btn" onClick={startOver}>
                                 Hacer otra cotización
@@ -385,9 +379,6 @@ function Quote() {
                                                                 </span>
                                                                 <div className="quote-item-info">
                                                                     <strong>{p.name}</strong>
-                                                                    <span className="quote-item-price">
-                                                                        {p.price === null ? 'Precio a convenir' : `${formatCOP(p.price)} / kg`}
-                                                                    </span>
                                                                     <input
                                                                         type="text"
                                                                         className="quote-item-note"
@@ -497,8 +488,8 @@ function Quote() {
                                     {step === 2 && (
                                         <div className="quote-panel" key="step-2">
                                             <div className="quote-panel-head">
-                                                <h2>¿A quién le enviamos la cotización?</h2>
-                                                <p>Te llega al correo en PDF, con los precios y un botón para confirmar el pedido.</p>
+                                                <h2>¿A nombre de quién hacemos la cotización?</h2>
+                                                <p>Al terminar descargas el PDF con los precios y el valor total.</p>
                                             </div>
                                             <div className="quote-grid-2">
                                                 <div className="form-group">
@@ -524,7 +515,7 @@ function Quote() {
                                                     {errors.phone && <span className="field-error">{errors.phone}</span>}
                                                 </div>
                                                 <div className="form-group">
-                                                    <label htmlFor="q-email">Correo (aquí te llega la cotización) *</label>
+                                                    <label htmlFor="q-email">Correo *</label>
                                                     <input id="q-email" type="email" autoComplete="email" className={`form-control ${errors.email ? 'error' : ''}`} value={draft.email} onChange={set('email')} />
                                                     {errors.email && <span className="field-error">{errors.email}</span>}
                                                 </div>
@@ -548,29 +539,6 @@ function Quote() {
                                                 aria-hidden="true"
                                             />
 
-                                            {status === 'error' && (
-                                                <div className="quote-send-error" role="alert">
-                                                    <strong>No pudimos enviar la cotización a tu correo.</strong>
-                                                    <span>{sendError}</span>
-                                                    <div>
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-outline"
-                                                            onClick={() => downloadPdf(`LAB-${Date.now().toString(36).toUpperCase()}`, new Date().toISOString())}
-                                                        >
-                                                            <Download size={16} /> Descargar PDF
-                                                        </button>
-                                                        <a
-                                                            className="btn btn-outline"
-                                                            href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(buildMessage(draft))}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            Enviar por WhatsApp
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     )}
 
@@ -585,10 +553,8 @@ function Quote() {
                                                 Continuar <ArrowRight size={18} />
                                             </button>
                                         ) : (
-                                            <button type="submit" className="btn btn-primary quote-submit" disabled={status === 'sending'}>
-                                                {status === 'sending'
-                                                    ? <>Enviando... <Loader2 size={18} className="quote-spin" /></>
-                                                    : <>Recibir cotización por correo <ArrowRight size={18} /></>}
+                                            <button type="submit" className="btn btn-primary quote-submit">
+                                                Generar cotización en PDF <FileText size={18} />
                                             </button>
                                         )}
                                     </div>
@@ -600,27 +566,20 @@ function Quote() {
                                         <p className="quote-summary-empty">Aún no has agregado productos.</p>
                                     ) : (
                                         <ul className="quote-summary-list">
-                                            {pricing.lines.map(l => (
-                                                <li key={l.slug}>
-                                                    <span>{l.name}<small>{l.quantity || 0} {l.unit} · {l.frequency}</small></span>
-                                                    <strong>{l.subtotal === null ? 'A convenir' : formatCOP(l.subtotal)}</strong>
+                                            {draft.items.map(it => (
+                                                <li key={it.slug}>
+                                                    <span>{findProduct(it.slug).name}</span>
+                                                    <strong>{it.quantity || 0} {it.unit}<small>{it.frequency}</small></strong>
                                                 </li>
                                             ))}
                                         </ul>
-                                    )}
-                                    {draft.items.length > 0 && (
-                                        <div className="quote-summary-total">
-                                            <span>Total por entrega</span>
-                                            <strong>{formatCOP(pricing.total)}</strong>
-                                        </div>
                                     )}
                                     <dl className="quote-summary-meta">
                                         <div><dt>Entrega</dt><dd>{draft.city || '—'}</dd></div>
                                         <div><dt>Cliente</dt><dd>{draft.clientType || '—'}</dd></div>
                                     </dl>
                                     <p className="quote-summary-note">
-                                        Precios estándar por kilo en pesos colombianos.
-                                        {pricing.hasUnpriced && ' Los productos "a convenir" se cotizan aparte.'}
+                                        Los precios y el valor total aparecen en el PDF de la cotización.
                                     </p>
                                 </aside>
                             </div>

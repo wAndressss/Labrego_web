@@ -62,7 +62,7 @@ function Company() {
                         </div>
                         <div className="history-image-wrap reveal-up">
                             <div className="journey-frame company-frame">
-                                <div className="journey-image" style={{ backgroundImage: 'url(/about_bg.png)' }} />
+                                <div className="journey-image" style={{ backgroundImage: 'url(/images/cultivo-atardecer.webp)' }} />
                                 <span className="journey-badge">Trujillo, Valle del Cauca</span>
                             </div>
                         </div>

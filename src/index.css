@@ -573,7 +573,7 @@ textarea:focus-visible {
   position: absolute;
   inset: -10%;
   z-index: -2;
-  background-image: var(--page-hero-img, url('/hero_bg.png'));
+  background-image: var(--page-hero-img, url('/images/panoramica-valle.webp'));
   background-size: cover;
   background-position: center;
   filter: blur(14px) saturate(1.05);

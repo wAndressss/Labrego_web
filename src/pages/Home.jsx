@@ -12,6 +12,7 @@ import {
     ClipboardList,
     Package,
     MessageCircle,
+    MapPin,
 } from 'lucide-react';
 import ProductShowcase from '../components/ProductShowcase';
 import { catalog } from '../data/products';
@@ -91,35 +92,58 @@ function Home() {
                 </div>
 
                 <div className="container lab-hero-inner">
-                    <span className={`lab-pill ${heroVisible ? 'visible' : ''}`}>
-                        <Sparkles size={14} strokeWidth={2} />
-                        Cosecha 2026 · Proveedor B2B
-                    </span>
+                    <div className="lab-hero-copy">
+                        <span className={`lab-pill ${heroVisible ? 'visible' : ''}`}>
+                            <Sparkles size={14} strokeWidth={2} />
+                            Cosecha 2026 · Proveedor B2B
+                        </span>
 
-                    <h1 className={`lab-hero-h reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        Abastecimiento de{' '}
-                        <span className="lab-accent">alimentos frescos en volumen real.</span>
-                    </h1>
+                        <h1 className={`lab-hero-h reveal-up ${heroVisible ? 'visible' : ''}`}>
+                            Alimentos frescos del campo{' '}
+                            <span className="lab-accent">en volumen real.</span>
+                        </h1>
 
-                    <p className={`lab-hero-script script-text reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        Cultivamos calidad. Cosechamos confianza.
-                    </p>
+                        <p className={`lab-hero-script script-text reveal-up ${heroVisible ? 'visible' : ''}`}>
+                            Cultivamos calidad. Cosechamos confianza.
+                        </p>
 
-                    <p className={`lab-hero-lead reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        Producimos y abastecemos frutas y cárnicos
-                        para retail, plazas, mayoristas e industria.
-                        <br />• Volumen constante  • Trazabilidad documentada  • Logística precisa<br />
-                    </p>
+                        <p className={`lab-hero-lead reveal-up ${heroVisible ? 'visible' : ''}`}>
+                            Producimos y abastecemos plátano, banano, aguacate, limón y cárnicos
+                            para retail, plazas, mayoristas e industria.
+                        </p>
 
-                    <div className={`lab-hero-actions reveal-up ${heroVisible ? 'visible' : ''}`}>
-                        <Link to="/productos" className="lab-btn lab-btn-olive">
-                            Ver Productos
-                            <ArrowRight size={16} />
-                        </Link>
-                        <Link to="/cotizar" className="lab-btn lab-btn-outline-light">
-                            Solicitar cotización
-                            <ClipboardList size={16} />
-                        </Link>
+                        <ul className={`lab-hero-checks reveal-up ${heroVisible ? 'visible' : ''}`}>
+                            <li><ShieldCheck size={16} /> Trazabilidad por lote</li>
+                            <li><Truck size={16} /> Entregas programadas</li>
+                            <li><LineChart size={16} /> Volumen constante</li>
+                        </ul>
+
+                        <div className={`lab-hero-actions reveal-up ${heroVisible ? 'visible' : ''}`}>
+                            <Link to="/cotizar" className="lab-btn lab-btn-accent">
+                                Cotizar pedido
+                                <ClipboardList size={16} />
+                            </Link>
+                            <Link to="/productos" className="lab-btn lab-btn-outline-light">
+                                Ver productos
+                                <ArrowRight size={16} />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Collage de fotos con etiquetas flotantes */}
+                    <div className={`lab-hero-visual ${heroVisible ? 'visible' : ''}`} aria-hidden="true">
+                        <div className="lab-hero-photo lab-hero-photo-main" />
+                        <div className="lab-hero-photo lab-hero-photo-small" />
+                        <div className="lab-hero-tag lab-hero-tag-1">
+                            <span><MapPin size={16} /></span>
+                            <div><strong>Valle del Cauca</strong><small>Trujillo · Colombia</small></div>
+                        </div>
+                        <div className="lab-hero-tag lab-hero-tag-2">
+                            <div className="lab-hero-faces">
+                                {catalog.slice(0, 4).map(p => <img key={p.slug} src={p.image} alt="" />)}
+                            </div>
+                            <div><strong>{catalog.length} productos</strong><small>del campo a tu empresa</small></div>
+                        </div>
                     </div>
                 </div>
 

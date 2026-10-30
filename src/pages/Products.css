@@ -1,6 +1,6 @@
 /* products-header inherits unified .page-header treatment */
 .products-header {
-    --page-hero-img: url('/hero_bg.png');
+    --page-hero-img: url('/images/racimos-embolsados.webp');
 }
 
 /* ==============================
