@@ -10,6 +10,9 @@ echo    LABREGO - abriendo la pagina
 echo  ==============================================
 echo.
 echo  [1/3] Bajando los ultimos cambios de GitHub...
+REM npm install a veces reescribe package-lock.json en Windows; ese cambio local
+REM bloquearia el git pull, asi que se descarta antes de bajar la nueva version.
+git restore package-lock.json 2>nul
 git pull --ff-only
 if errorlevel 1 (
   echo.
