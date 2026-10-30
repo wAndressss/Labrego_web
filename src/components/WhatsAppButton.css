@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 12px 28px rgba(37, 211, 102, 0.45), 0 4px 10px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.3);
     z-index: 1400;
     text-decoration: none;
     opacity: 0;
@@ -26,7 +26,7 @@
 .whatsapp-fab:hover,
 .whatsapp-fab:focus-visible {
     background: #1ebd5b;
-    box-shadow: 0 16px 36px rgba(37, 211, 102, 0.55), 0 6px 14px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 14px 30px -6px rgba(0, 0, 0, 0.35);
     outline: none;
 }
 
@@ -39,19 +39,20 @@
     z-index: 2;
 }
 
+/* Anillo fino que se expande de vez en cuando para llamar la atención */
 .whatsapp-pulse {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: #25d366;
-    opacity: 0.55;
-    animation: whatsapp-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    border: 2px solid #25d366;
+    animation: whatsapp-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
     z-index: 1;
+    pointer-events: none;
 }
 
 @keyframes whatsapp-ping {
-    0% { transform: scale(1); opacity: 0.5; }
-    80%, 100% { transform: scale(1.7); opacity: 0; }
+    0% { transform: scale(1); opacity: 0.8; }
+    60%, 100% { transform: scale(1.45); opacity: 0; }
 }
 
 /* Mobile — slightly smaller and lifted to avoid overlapping cookie banner / sticky CTAs */
@@ -64,8 +65,8 @@
     }
 
     .whatsapp-fab svg {
-        width: 24px;
-        height: 24px;
+        width: 27px;
+        height: 27px;
     }
 }
 

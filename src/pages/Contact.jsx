@@ -174,9 +174,9 @@ function Contact() {
                 <div className="container">
                     <div className={`contact-channels reveal-stagger ${channelsVisible ? 'visible' : ''}`} ref={channelsRef}>
                         <div className="contact-channel contact-channel-whatsapp">
-                            <span className="contact-channel-watermark" aria-hidden="true"><WhatsAppIcon size={150} /></span>
+                            <span className="contact-channel-watermark" aria-hidden="true"><WhatsAppIcon size={140} /></span>
                             <div className="contact-channel-top">
-                                <span className="contact-channel-icon"><WhatsAppIcon size={28} /></span>
+                                <span className="contact-channel-icon"><WhatsAppIcon size={30} /></span>
                                 <span className="contact-channel-badge">Respuesta rápida</span>
                             </div>
                             <span className="contact-channel-label">WhatsApp</span>

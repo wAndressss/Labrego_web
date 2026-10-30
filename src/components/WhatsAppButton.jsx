@@ -25,7 +25,7 @@ function WhatsAppButton() {
             title="Chatear por WhatsApp"
         >
             <span className="whatsapp-pulse" aria-hidden="true" />
-            <WhatsAppIcon size={28} />
+            <WhatsAppIcon size={30} />
         </a>
     );
 }

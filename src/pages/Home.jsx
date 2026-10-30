@@ -75,7 +75,7 @@ function Home() {
     const [quoteRef, quoteVisible] = useReveal(0.2);
 
     const heroBgRef = useParallax(0.22, { scale: 0.0004 });
-    const cineImgRef = useParallax(0.15, { scale: 0.0006 });
+    const cineImgRef = useParallax(0.12, { max: 110 });
     const [cineRef, cineProgress] = useScrollProgress();
 
     const navigate = useNavigate();

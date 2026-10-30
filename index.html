@@ -40,8 +40,33 @@
         transition: opacity .6s ease, visibility .6s ease;
       }
       #splash.splash-hide { opacity: 0; visibility: hidden; }
+      #splash { overflow: hidden; isolation: isolate; }
+      /* Fondo sutil: patrón de hojas, manchas de color, colinas y hojas que caen */
+      .sp-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+      .sp-pattern { position: absolute; inset: 0; opacity: .5;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%235d8a2e' stroke-opacity='0.13' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M18 46c10-18 30-24 44-20-4 16-20 30-44 20z'/%3E%3Cpath d='M18 46c14-6 28-12 44-20'/%3E%3Cpath d='M104 30c18-6 34 4 38 18-16 4-34-2-38-18z'/%3E%3Cpath d='M70 112c4-20 22-32 38-30 0 16-14 32-38 30z'/%3E%3Cpath d='M70 112c12-10 24-20 38-30'/%3E%3Cpath d='M126 128c16-10 32-6 38 6-14 8-32 6-38-6z'/%3E%3C/g%3E%3C/svg%3E");
+        -webkit-mask-image: radial-gradient(ellipse at center, transparent 18%, #000 70%); mask-image: radial-gradient(ellipse at center, transparent 18%, #000 70%); }
+      .sp-blob { position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%; filter: blur(30px); animation: sp-drift 12s ease-in-out infinite alternate; }
+      .sp-blob-1 { left: -18vmax; top: -16vmax; background: radial-gradient(circle, rgba(152,191,34,.22), transparent 65%); }
+      .sp-blob-2 { right: -18vmax; bottom: -18vmax; background: radial-gradient(circle, rgba(240,156,60,.18), transparent 65%); animation-delay: -6s; }
+      .sp-hills { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 22vh; }
+      .sp-leaf { position: absolute; top: -40px; width: 22px; height: 22px; color: #6f9a23; opacity: 0;
+        animation: sp-fall linear infinite; }
+      .sp-leaves .sp-leaf:nth-child(1) { left: 12%; animation-duration: 7s; animation-delay: .2s; }
+      .sp-leaves .sp-leaf:nth-child(2) { left: 28%; animation-duration: 9s; animation-delay: 1.6s; width: 16px; }
+      .sp-leaves .sp-leaf:nth-child(3) { left: 72%; animation-duration: 8s; animation-delay: .8s; }
+      .sp-leaves .sp-leaf:nth-child(4) { left: 86%; animation-duration: 10s; animation-delay: 2.4s; width: 14px; }
+      .sp-leaves .sp-leaf:nth-child(5) { left: 55%; animation-duration: 11s; animation-delay: 3s; width: 18px; color: #e8a93a; }
+      @keyframes sp-drift { from { transform: translate(0,0); } to { transform: translate(4vmax, 3vmax); } }
+      @keyframes sp-fall {
+        0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
+        10% { opacity: .35; }
+        50% { transform: translate(40px,50vh) rotate(160deg); }
+        90% { opacity: .3; }
+        100% { transform: translate(-20px,105vh) rotate(320deg); opacity: 0; }
+      }
       .splash-seen #splash { display: none; }
-      #splash svg { width: min(280px, 64vw); height: auto; overflow: visible; }
+      #splash > svg { width: min(280px, 64vw); height: auto; overflow: visible; }
       .sp-sun { transform-box: fill-box; transform-origin: center; animation: sp-rise 1.1s cubic-bezier(.2,.8,.2,1) both; }
       .sp-rays { transform-box: view-box; transform-origin: 100px 92px; animation: sp-rays-in .6s ease-out .7s both, sp-spin 14s linear 1.3s infinite; }
       .sp-ray { fill: #f09c3c; }
@@ -89,6 +114,22 @@
   </head>
   <body>
     <div id="splash" role="status" aria-label="Cargando Labrego">
+      <div class="sp-bg" aria-hidden="true">
+        <div class="sp-pattern"></div>
+        <div class="sp-blob sp-blob-1"></div>
+        <div class="sp-blob sp-blob-2"></div>
+        <svg class="sp-hills" viewBox="0 0 1440 220" preserveAspectRatio="none">
+          <path d="M0 140 C 240 60, 420 70, 640 120 S 1080 60, 1440 110 L1440 220 L0 220 Z" fill="#93c02b" fill-opacity="0.10" />
+          <path d="M0 175 C 300 110, 560 150, 820 160 S 1200 120, 1440 150 L1440 220 L0 220 Z" fill="#4f6b1a" fill-opacity="0.10" />
+        </svg>
+        <div class="sp-leaves">
+          <svg class="sp-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.3.2 2 1-4 4-8 9-10-4 3-6.5 6.5-7.5 10.5C15 20 20 13 20 4z"/></svg>
+          <svg class="sp-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.3.2 2 1-4 4-8 9-10-4 3-6.5 6.5-7.5 10.5C15 20 20 13 20 4z"/></svg>
+          <svg class="sp-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.3.2 2 1-4 4-8 9-10-4 3-6.5 6.5-7.5 10.5C15 20 20 13 20 4z"/></svg>
+          <svg class="sp-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.3.2 2 1-4 4-8 9-10-4 3-6.5 6.5-7.5 10.5C15 20 20 13 20 4z"/></svg>
+          <svg class="sp-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.3.2 2 1-4 4-8 9-10-4 3-6.5 6.5-7.5 10.5C15 20 20 13 20 4z"/></svg>
+        </div>
+      </div>
       <svg viewBox="0 0 200 150" aria-hidden="true">
         <defs><clipPath id="sp-horizon"><rect x="0" y="-60" width="200" height="160" /></clipPath></defs>
         <g clip-path="url(#sp-horizon)">
