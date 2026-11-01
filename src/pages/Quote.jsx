@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
     ArrowLeft,
@@ -139,7 +139,20 @@ function Quote() {
         try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch { /* sin almacenamiento */ }
     }, [draft]);
 
-    useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [step, sent]);
+    // Al cambiar de paso no se vuelve al inicio de la página: solo se sube
+    // lo justo para ver el paso nuevo, y solo si quedó por encima de la pantalla
+    const formTopRef = useRef(null);
+    const firstRender = useRef(true);
+    useEffect(() => {
+        if (firstRender.current) { firstRender.current = false; return; }
+        const el = formTopRef.current;
+        if (!el) return;
+        const headerSpace = 100; // encabezado flotante
+        const top = el.getBoundingClientRect().top;
+        if (top < headerSpace) {
+            window.scrollTo({ top: window.scrollY + top - headerSpace, behavior: 'smooth' });
+        }
+    }, [step, sent]);
 
     const set = (key) => (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -258,7 +271,7 @@ function Quote() {
             </section>
 
             <section className="section quote-section">
-                <div className="container">
+                <div className="container" ref={formTopRef}>
                     {sent ? (
                         <div className="quote-done">
                             <span className="quote-done-icon"><CheckCircle size={56} strokeWidth={1.6} /></span>
